@@ -1,0 +1,15 @@
+{
+  "id": "collateral_outflow_resistance",
+  "unit": "mmHg.s/mL",
+  "fitted_parameter": "Rvvs",
+  "physiological_equivalent_description": "Resistance of the vertebral venous plexus, the collateral route cerebral blood takes when the jugular is obstructed. A high value means outflow CANNOT redistribute and the jugular is functionally the only exit - which is what makes a compression raise ICP.",
+  "min_pathological_bound": 0.01,
+  "min_healthy_bound": 0.02,
+  "max_healthy_bound": 0.2,
+  "max_pathological_bound": 2.0,
+  "direction_of_concern": "high",
+  "bound_provenance": "model",
+  "bound_source": "anchored on M3's default Rvvs = 0.04 mmHg.s/mL; NO published human range",
+  "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+  "stream": "../stream/{patient}/collateral_outflow_resistance.jsonl"
+}

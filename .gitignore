@@ -1,0 +1,15 @@
+# Patient recordings. Excluded BY DEFAULT so that this repository can be shared without
+# that decision being made by accident. `git add -f data/` to include them — and if you do,
+# keep the repository private.
+data/
+
+# Generated streams. The metadata in api/params/ IS committed (it is the API contract);
+# the per-patient streams are outputs and are reproducible from the recordings.
+api/stream/
+api/refit_*.log
+api/stream_all.log
+
+*.jl.cov
+*.jl.mem
+.ipynb_checkpoints/
+__pycache__/

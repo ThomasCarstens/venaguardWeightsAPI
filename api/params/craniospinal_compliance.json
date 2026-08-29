@@ -1,0 +1,15 @@
+{
+  "id": "craniospinal_compliance",
+  "unit": "mL/mmHg",
+  "fitted_parameter": "E",
+  "physiological_equivalent_description": "Craniospinal compliance: the volume the craniospinal space accepts per mmHg of ICP rise. The bedside quantity behind PVI, RAP and 'compensatory reserve'. Falls as the cranium is loaded; a low value means a small further volume produces a large ICP rise. Computed as 1/(E*(ICP_baseline - Pcv)) from the fitted elastance coefficient E.",
+  "min_pathological_bound": 0.1,
+  "min_healthy_bound": 0.5,
+  "max_healthy_bound": 1.1,
+  "max_pathological_bound": 2.0,
+  "direction_of_concern": "low",
+  "bound_provenance": "clinical",
+  "bound_source": "craniospinal compliance 0.5-1.1 mL/mmHg in adults; <0.4 is reduced reserve",
+  "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+  "stream": "../stream/{patient}/craniospinal_compliance.jsonl"
+}

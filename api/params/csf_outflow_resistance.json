@@ -1,0 +1,15 @@
+{
+  "id": "csf_outflow_resistance",
+  "unit": "mmHg/(mL/min)",
+  "fitted_parameter": "Ro_tot",
+  "physiological_equivalent_description": "Resistance to CSF absorption (Rout) - the quantity a lumbar infusion study measures directly. Elevated in normal-pressure hydrocephalus and IIH; abnormally LOW suggests a CSF leak, an open shunt, or a mis-specified cranial/spinal absorption split. Computed as the parallel combination of the cranial (0.069) and spinal (0.931) routes.",
+  "min_pathological_bound": 3.0,
+  "min_healthy_bound": 6.0,
+  "max_healthy_bound": 10.0,
+  "max_pathological_bound": 18.0,
+  "direction_of_concern": "both",
+  "bound_provenance": "clinical",
+  "bound_source": "Rout 6-10 mmHg/(mL/min) normal; >12-13 supports NPH",
+  "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+  "stream": "../stream/{patient}/csf_outflow_resistance.jsonl"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "sagittal_sinus_pressure",
+  "unit": "mmHg",
+  "fitted_parameter": "Psinus",
+  "physiological_equivalent_description": "Superior sagittal sinus pressure, the downstream boundary for cerebral venous outflow. Elevated in venous sinus stenosis and IIH. STREAMED AS A NEGATIVE CONTROL: it is the one parameter that stayed inside its healthy band in all four recordings, so a pipeline that reports it as pathological has a bug rather than a finding.",
+  "min_pathological_bound": 2.0,
+  "min_healthy_bound": 5.0,
+  "max_healthy_bound": 8.0,
+  "max_pathological_bound": 15.0,
+  "direction_of_concern": "high",
+  "bound_provenance": "clinical",
+  "bound_source": "supine SSS pressure ~5-8 mmHg",
+  "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+  "stream": "../stream/{patient}/sagittal_sinus_pressure.jsonl"
+}
