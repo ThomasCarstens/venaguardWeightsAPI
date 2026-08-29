@@ -4,5 +4,15 @@
   "param_metadata": "params/{id}.json",
   "stream": "stream/{patient}/{id}.jsonl",
   "stream_record": "{t_end, value, ci_lo, ci_hi, status, identifiable, rmse, n_solves}",
-  "status_values": ["healthy", "borderline", "pathological", "unidentifiable"]
+  "status_values": ["healthy", "borderline", "pathological", "unidentifiable"],
+  "components": {
+    "circuit": "circuit.json",
+    "component_meta": "components/{id}.json",
+    "stream": "stream/{patient}/_components.jsonl",
+    "record": "{t_end, n_parameters, rules_fired, rule_detail, components[]}",
+    "component": "{component, weight, direction, attribution, attribution_reason, lead_parameter, contributions[]}",
+    "attributions": ["patient", "model_referenced", "fit_quality", "model_artifact", "degenerate", "unidentifiable"],
+    "note": "weight 0 at the healthy edge, 1.0 at the pathological bound, discounted by identifiability. An ABSENT component is NOT ESTIMATED, not normal. attribution says whether the excursion is about the patient or about the fit.",
+    "regenerate": "python3 scripts/translate_stream.py"
+  }
 }
