@@ -54,9 +54,20 @@ Data is **not** in git. `bash scripts/setup_data.sh /path/to/brainphysio_celia` 
 
 ## Things that will bite you
 
-**Port is 8770**, not 877. A stale server from an earlier session will hold it and you will
-get `Address already in use`; find it with `ps -eo pid,args | grep "[s]erve_api"` and kill by
-PID. Do **not** `pkill -f serve_api` — the pattern matches your own command line.
+**Port is 8770**, not 877. A stale server from an earlier session will hold it; the server
+now reports that with the holding pid and what to do, instead of a socketserver traceback:
+
+```
+port 8770 is already in use
+  held by pid 34833: python3 scripts/serve_api.py
+  reuse it:  curl -s http://127.0.0.1:8770/
+  or stop it: kill 34833
+  or pick another port:  scripts/serve_api.py --port 8771
+```
+
+Usually the right move is **reuse it** — the server is stateless and file-backed, so an
+already-running one serves current data. Do **not** `pkill -f serve_api`: the pattern matches
+your own command line and kills the caller.
 
 **`nohup ... &` inside a single shell invocation does not persist.** Start the server as a
 proper background task.

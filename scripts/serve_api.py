@@ -26,7 +26,7 @@ Endpoints
         ?since=<t>                         only windows with t_end > t
     GET /components/<patient>/latest       the most recent window, ranked by weight
 """
-import json, os, sys, argparse
+import json, os, re, sys, argparse, errno, subprocess
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 
@@ -91,6 +91,30 @@ def _latest(patient):
             "n_records": len(recs),
         }
     return out
+
+
+def _port_holder(port):
+    """(pid, cmdline) of whoever is listening on `port`, or None. Best-effort: parses `ss`,
+    and simply gives up if it is unavailable rather than guessing."""
+    try:
+        out = subprocess.run(["ss", "-ltnp"], capture_output=True, text=True, timeout=3).stdout
+    except Exception:
+        return None
+    for line in out.splitlines():
+        if f":{port} " not in line and not line.rstrip().endswith(f":{port}"):
+            if f":{port}" not in line:
+                continue
+        m = re.search(r"pid=(\d+)", line)
+        if not m:
+            continue
+        pid = m.group(1)
+        try:
+            with open(f"/proc/{pid}/cmdline", "rb") as f:
+                cmd = f.read().replace(b"\0", b" ").decode(errors="replace").strip()
+        except OSError:
+            cmd = "?"
+        return pid, cmd
+    return None
 
 
 def _circuit():
@@ -288,7 +312,26 @@ if __name__ == "__main__":
     a = ap.parse_args()
     if a.check:
         sys.exit(check())
-    srv = ThreadingHTTPServer(("127.0.0.1", a.port), Handler)
+    try:
+        srv = ThreadingHTTPServer(("127.0.0.1", a.port), Handler)
+    except OSError as e:
+        if e.errno != errno.EADDRINUSE:
+            raise
+        # A traceback here says "socketserver.py line 457", which is true and useless. The
+        # actual situation is always the same: an earlier server is still up. Say so, name
+        # the process, and give the two ways out.
+        holder = _port_holder(a.port)
+        print(f"port {a.port} is already in use", file=sys.stderr)
+        if holder:
+            pid, cmd = holder
+            print(f"  held by pid {pid}: {cmd}", file=sys.stderr)
+            print(f"  reuse it:  curl -s http://127.0.0.1:{a.port}/", file=sys.stderr)
+            print(f"  or stop it: kill {pid}", file=sys.stderr)
+        else:
+            print("  (could not identify the process; try `ss -ltnp | grep "
+                  f"{a.port}`)", file=sys.stderr)
+        print(f"  or pick another port:  {sys.argv[0]} --port {a.port + 1}", file=sys.stderr)
+        sys.exit(2)
     print(f"serving {API}\n  http://127.0.0.1:{a.port}/")
     print(f"  http://127.0.0.1:{a.port}/params/craniospinal_compliance")
     print(f"  http://127.0.0.1:{a.port}/latest/081")
