@@ -1,0 +1,18 @@
+{
+  "id": "intracranial_csf",
+  "label": "Intracranial CSF / brain",
+  "state": "Pic",
+  "hydrostatic_panel": "tilt_pressures_heart",
+  "description": "The intracranial compartment whose pressure IS the measured ICP. Referenced to the heart-to-brain hydrostatic column.",
+  "plotter_trace": "brain.ext.p",
+  "kind": "compartment",
+  "governed_by": [
+    {
+      "param": "craniospinal_compliance",
+      "share": 0.3,
+      "role": "storage",
+      "note": "E sets Ctot = 1/(E\u00b7(Pic\u2212Pcv)); \u03b1=0.3 of it is the cranial share."
+    }
+  ],
+  "observable": true
+}

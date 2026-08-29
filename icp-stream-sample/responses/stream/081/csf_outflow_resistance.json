@@ -1,0 +1,247 @@
+{
+ "patient": "081",
+ "param": "csf_outflow_resistance",
+ "n": 24,
+ "records": [
+  {
+   "t_end": -60.0,
+   "value": 8.03389,
+   "ci_lo": 0.452172,
+   "ci_hi": 142.741,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.3361,
+   "n_solves": 50
+  },
+  {
+   "t_end": -45.72,
+   "value": 3.58497,
+   "ci_lo": 0.742068,
+   "ci_hi": 17.3192,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.2594,
+   "n_solves": 66
+  },
+  {
+   "t_end": -31.45,
+   "value": 3.04517,
+   "ci_lo": 0.381641,
+   "ci_hi": 24.2979,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.2487,
+   "n_solves": 48
+  },
+  {
+   "t_end": -17.17,
+   "value": 3.04517,
+   "ci_lo": 0.473454,
+   "ci_hi": 19.586,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.3139,
+   "n_solves": 36
+  },
+  {
+   "t_end": -2.89,
+   "value": 5.83411,
+   "ci_lo": 1.29123,
+   "ci_hi": 26.3599,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.4746,
+   "n_solves": 37
+  },
+  {
+   "t_end": 11.38,
+   "value": 5.83411,
+   "ci_lo": 1.83524,
+   "ci_hi": 18.5462,
+   "status": "unidentifiable",
+   "identifiable": false,
+   "rmse": 0.868,
+   "n_solves": 33
+  },
+  {
+   "t_end": 25.66,
+   "value": 2.48772,
+   "ci_lo": 1.58454,
+   "ci_hi": 3.90571,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 1.0017,
+   "n_solves": 34
+  },
+  {
+   "t_end": 39.94,
+   "value": 2.31945,
+   "ci_lo": 1.49241,
+   "ci_hi": 3.60479,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.9718,
+   "n_solves": 33
+  },
+  {
+   "t_end": 54.22,
+   "value": 1.93398,
+   "ci_lo": 1.5588,
+   "ci_hi": 2.39946,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8235,
+   "n_solves": 36
+  },
+  {
+   "t_end": 68.49,
+   "value": 1.93398,
+   "ci_lo": 1.57899,
+   "ci_hi": 2.36878,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8416,
+   "n_solves": 33
+  },
+  {
+   "t_end": 82.77,
+   "value": 1.93398,
+   "ci_lo": 1.68165,
+   "ci_hi": 2.22416,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8131,
+   "n_solves": 32
+  },
+  {
+   "t_end": 97.05,
+   "value": 1.93398,
+   "ci_lo": 1.79674,
+   "ci_hi": 2.08171,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.784,
+   "n_solves": 33
+  },
+  {
+   "t_end": 111.32,
+   "value": 1.93398,
+   "ci_lo": 1.83491,
+   "ci_hi": 2.03839,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7775,
+   "n_solves": 32
+  },
+  {
+   "t_end": 125.6,
+   "value": 1.93398,
+   "ci_lo": 1.85185,
+   "ci_hi": 2.01975,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8843,
+   "n_solves": 33
+  },
+  {
+   "t_end": 139.88,
+   "value": 1.93398,
+   "ci_lo": 1.85243,
+   "ci_hi": 2.01912,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8603,
+   "n_solves": 33
+  },
+  {
+   "t_end": 154.15,
+   "value": 1.93398,
+   "ci_lo": 1.85248,
+   "ci_hi": 2.01906,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8395,
+   "n_solves": 33
+  },
+  {
+   "t_end": 168.43,
+   "value": 1.93398,
+   "ci_lo": 1.85249,
+   "ci_hi": 2.01905,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8189,
+   "n_solves": 33
+  },
+  {
+   "t_end": 182.71,
+   "value": 1.93398,
+   "ci_lo": 1.8525,
+   "ci_hi": 2.01904,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8056,
+   "n_solves": 33
+  },
+  {
+   "t_end": 196.99,
+   "value": 1.93398,
+   "ci_lo": 1.85259,
+   "ci_hi": 2.01895,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7936,
+   "n_solves": 33
+  },
+  {
+   "t_end": 211.26,
+   "value": 1.93398,
+   "ci_lo": 1.8555,
+   "ci_hi": 2.01578,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7757,
+   "n_solves": 33
+  },
+  {
+   "t_end": 225.54,
+   "value": 1.93398,
+   "ci_lo": 1.85589,
+   "ci_hi": 2.01535,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7641,
+   "n_solves": 34
+  },
+  {
+   "t_end": 239.82,
+   "value": 1.93398,
+   "ci_lo": 1.85846,
+   "ci_hi": 2.01257,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7496,
+   "n_solves": 34
+  },
+  {
+   "t_end": 254.09,
+   "value": 1.93398,
+   "ci_lo": 1.86186,
+   "ci_hi": 2.00889,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7376,
+   "n_solves": 33
+  },
+  {
+   "t_end": 268.37,
+   "value": 1.93398,
+   "ci_lo": 1.86559,
+   "ci_hi": 2.00488,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7288,
+   "n_solves": 34
+  }
+ ]
+}

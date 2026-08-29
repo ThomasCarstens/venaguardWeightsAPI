@@ -1,0 +1,11 @@
+{
+  "id": "azygos_return",
+  "label": "Azygos return",
+  "frm": "paravertebral",
+  "to": "systemic_venous",
+  "element": "Razy",
+  "description": "Azygos/hemiazygos return to the systemic venous pool.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

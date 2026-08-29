@@ -1,0 +1,15 @@
+{
+ "id": "arterial_compliance",
+ "unit": "mL/mmHg",
+ "fitted_parameter": "Ca",
+ "physiological_equivalent_description": "Cerebral arterial compliance: the arterial bed's volume response within a cardiac cycle. Sets how much of each beat's stroke volume the arteries themselves absorb, and is the parameter cerebrovascular reactivity indices (PRx) are sensitive to.",
+ "min_pathological_bound": 0.005,
+ "min_healthy_bound": 0.015,
+ "max_healthy_bound": 0.05,
+ "max_pathological_bound": 0.1,
+ "direction_of_concern": "low",
+ "bound_provenance": "model",
+ "bound_source": "anchored on M3's literature default Ca = 0.03 mL/mmHg; no human range",
+ "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+ "stream": "../stream/{patient}/arterial_compliance.jsonl"
+}

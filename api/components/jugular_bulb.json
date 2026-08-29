@@ -1,0 +1,11 @@
+{
+  "id": "jugular_bulb",
+  "label": "Jugular bulb / outflow junction",
+  "state": "P_j",
+  "hydrostatic_panel": null,
+  "description": "The junction where cerebral outflow divides between the internal jugular and the vertebral collateral. This is where the compression acts.",
+  "plotter_trace": null,
+  "kind": "compartment",
+  "governed_by": [],
+  "observable": false
+}

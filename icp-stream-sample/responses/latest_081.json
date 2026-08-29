@@ -1,0 +1,95 @@
+{
+ "patient": "081",
+ "params": {
+  "craniospinal_compliance": {
+   "value": 0.0935795,
+   "ci_lo": 0.0842756,
+   "ci_hi": 0.103911,
+   "status": "pathological",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "mL/mmHg",
+   "healthy_range": [
+    0.5,
+    1.1
+   ],
+   "bound_provenance": "clinical",
+   "n_records": 24
+  },
+  "csf_outflow_resistance": {
+   "value": 1.93398,
+   "ci_lo": 1.86559,
+   "ci_hi": 2.00488,
+   "status": "pathological",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "mmHg/(mL/min)",
+   "healthy_range": [
+    6.0,
+    10.0
+   ],
+   "bound_provenance": "clinical",
+   "n_records": 24
+  },
+  "arterial_compliance": {
+   "value": 0.00586358,
+   "ci_lo": 0.00533623,
+   "ci_hi": 0.00644306,
+   "status": "borderline",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "mL/mmHg",
+   "healthy_range": [
+    0.015,
+    0.05
+   ],
+   "bound_provenance": "model",
+   "n_records": 24
+  },
+  "collateral_outflow_resistance": {
+   "value": 14.4614,
+   "ci_lo": 7.20648,
+   "ci_hi": 29.0201,
+   "status": "pathological",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "mmHg.s/mL",
+   "healthy_range": [
+    0.02,
+    0.2
+   ],
+   "bound_provenance": "model",
+   "n_records": 24
+  },
+  "jugular_resting_area": {
+   "value": 4.49994,
+   "ci_lo": 3.87236,
+   "ci_hi": 5.22923,
+   "status": "pathological",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "cm2 per vein",
+   "healthy_range": [
+    0.8,
+    2.0
+   ],
+   "bound_provenance": "qc",
+   "n_records": 24
+  },
+  "sagittal_sinus_pressure": {
+   "value": 8.48291,
+   "ci_lo": 8.40739,
+   "ci_hi": 8.5591,
+   "status": "borderline",
+   "identifiable": true,
+   "t_end": 268.37,
+   "unit": "mmHg",
+   "healthy_range": [
+    5.0,
+    8.0
+   ],
+   "bound_provenance": "clinical",
+   "n_records": 24
+  }
+ }
+}

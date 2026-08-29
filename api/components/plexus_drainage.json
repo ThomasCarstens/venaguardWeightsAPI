@@ -1,0 +1,11 @@
+{
+  "id": "plexus_drainage",
+  "label": "Vertebral plexus drainage",
+  "frm": "vertebral_plexus",
+  "to": "paravertebral",
+  "element": "Rivp / Revp",
+  "description": "Drainage of the vertebral plexus into the paravertebral compartment.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

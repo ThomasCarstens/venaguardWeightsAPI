@@ -1,0 +1,11 @@
+{
+  "id": "arteriolar_bed",
+  "label": "Arteriolar bed (autoregulated)",
+  "frm": "cerebral_arterial",
+  "to": "cerebral_venous",
+  "element": "Ra",
+  "description": "Autoregulating arteriolar resistance. Sets cerebral blood flow and, through its compliance, the size of the arterial pulse entering the cranium.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

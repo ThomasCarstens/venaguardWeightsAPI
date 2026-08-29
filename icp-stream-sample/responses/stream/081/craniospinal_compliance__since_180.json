@@ -1,0 +1,77 @@
+{
+ "patient": "081",
+ "param": "craniospinal_compliance",
+ "n": 7,
+ "records": [
+  {
+   "t_end": 182.71,
+   "value": 0.0935795,
+   "ci_lo": 0.0826703,
+   "ci_hi": 0.105928,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.8056,
+   "n_solves": 33
+  },
+  {
+   "t_end": 196.99,
+   "value": 0.0935795,
+   "ci_lo": 0.0826989,
+   "ci_hi": 0.105892,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7936,
+   "n_solves": 33
+  },
+  {
+   "t_end": 211.26,
+   "value": 0.0935795,
+   "ci_lo": 0.0829953,
+   "ci_hi": 0.105513,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7757,
+   "n_solves": 33
+  },
+  {
+   "t_end": 225.54,
+   "value": 0.0935795,
+   "ci_lo": 0.0830098,
+   "ci_hi": 0.105495,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7641,
+   "n_solves": 34
+  },
+  {
+   "t_end": 239.82,
+   "value": 0.0935795,
+   "ci_lo": 0.0833047,
+   "ci_hi": 0.105122,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7496,
+   "n_solves": 34
+  },
+  {
+   "t_end": 254.09,
+   "value": 0.0935795,
+   "ci_lo": 0.0837328,
+   "ci_hi": 0.104584,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7376,
+   "n_solves": 33
+  },
+  {
+   "t_end": 268.37,
+   "value": 0.0935795,
+   "ci_lo": 0.0842756,
+   "ci_hi": 0.103911,
+   "status": "pathological",
+   "identifiable": true,
+   "rmse": 0.7288,
+   "n_solves": 34
+  }
+ ]
+}

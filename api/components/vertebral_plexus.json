@@ -1,0 +1,11 @@
+{
+  "id": "vertebral_plexus",
+  "label": "Vertebral venous plexus",
+  "state": "P_vv",
+  "hydrostatic_panel": "tilt_pressures_spine",
+  "description": "Internal/external vertebral plexus (Pivp \u2261 Pevp). The alternative drainage route when the jugular is occluded or the patient is upright.",
+  "plotter_trace": "Rivp.in.p / Revp.in.p",
+  "kind": "compartment",
+  "governed_by": [],
+  "observable": false
+}

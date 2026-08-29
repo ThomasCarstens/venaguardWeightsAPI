@@ -1,0 +1,18 @@
+{
+  "id": "internal_jugular",
+  "label": "Internal jugular vein",
+  "frm": "jugular_bulb",
+  "to": "systemic_venous",
+  "element": "Rijvs (collapsible tube law)",
+  "description": "The dominant venous outflow route when supine. A collapsible tube: external pressure collapses its area A and its resistance rises as ~A\u207b\u00b2. This is the vessel the compression manoeuvre occludes.",
+  "kind": "interface",
+  "governed_by": [
+    {
+      "param": "jugular_resting_area",
+      "share": 1.0,
+      "role": "geometry",
+      "note": "derived from k_ijvs through the tube law at rest; governs how readily the vein collapses under the compression."
+    }
+  ],
+  "observable": true
+}

@@ -1,0 +1,11 @@
+{
+  "id": "systemic_venous",
+  "label": "Systemic venous return",
+  "state": "P_sys",
+  "hydrostatic_panel": "tilt_pressures_heart",
+  "description": "The systemic venous pool returning to the right heart (Psys).",
+  "plotter_trace": "Hs_Pa.out.p",
+  "kind": "compartment",
+  "governed_by": [],
+  "observable": false
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vertebral_collateral",
+  "label": "Vertebral venous collateral",
+  "frm": "jugular_bulb",
+  "to": "vertebral_plexus",
+  "element": "Rvvs",
+  "description": "The parallel outflow path. Carries cerebral outflow when the jugular closes; if its resistance is low the occlusion costs almost nothing.",
+  "kind": "interface",
+  "governed_by": [
+    {
+      "param": "collateral_outflow_resistance",
+      "share": 1.0,
+      "role": "conductance",
+      "note": "Rvvs is the collateral resistance directly."
+    }
+  ],
+  "observable": true
+}

@@ -1,0 +1,25 @@
+{
+ "params": [
+  "craniospinal_compliance",
+  "csf_outflow_resistance",
+  "arterial_compliance",
+  "collateral_outflow_resistance",
+  "jugular_resting_area",
+  "sagittal_sinus_pressure"
+ ],
+ "patients": [
+  "081",
+  "083",
+  "137",
+  "150"
+ ],
+ "param_metadata": "params/{id}.json",
+ "stream": "stream/{patient}/{id}.jsonl",
+ "stream_record": "{t_end, value, ci_lo, ci_hi, status, identifiable, rmse, n_solves}",
+ "status_values": [
+  "healthy",
+  "borderline",
+  "pathological",
+  "unidentifiable"
+ ]
+}

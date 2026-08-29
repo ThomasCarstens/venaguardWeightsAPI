@@ -1,0 +1,11 @@
+{
+  "id": "cerebral_venous",
+  "label": "Cerebral venous compartment",
+  "state": "Pv / V_v",
+  "hydrostatic_panel": null,
+  "description": "Cerebral veins between the capillary bed and the dural sinus.",
+  "plotter_trace": null,
+  "kind": "compartment",
+  "governed_by": [],
+  "observable": false
+}

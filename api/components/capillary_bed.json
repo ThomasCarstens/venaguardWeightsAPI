@@ -1,0 +1,11 @@
+{
+  "id": "capillary_bed",
+  "label": "Capillary bed",
+  "frm": "cerebral_arterial",
+  "to": "cerebral_venous",
+  "element": "Rc",
+  "description": "Capillary resistance between the arterial and venous compartments.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

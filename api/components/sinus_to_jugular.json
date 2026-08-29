@@ -1,0 +1,11 @@
+{
+  "id": "sinus_to_jugular",
+  "label": "Sinus to jugular bulb",
+  "frm": "dural_sinus",
+  "to": "jugular_bulb",
+  "element": "Rss",
+  "description": "Transverse/sigmoid sinus run from the dural sinus to the bulb.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

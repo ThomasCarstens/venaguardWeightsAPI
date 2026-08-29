@@ -1,0 +1,18 @@
+{
+  "id": "csf_absorption_spinal",
+  "label": "CSF absorption, spinal",
+  "frm": "spinal_dural_sac",
+  "to": "paravertebral",
+  "element": "Ro_spine (0.931\u00b7Ro_tot)",
+  "description": "Spinal CSF absorption \u2014 the larger share of total outflow resistance.",
+  "kind": "interface",
+  "governed_by": [
+    {
+      "param": "csf_outflow_resistance",
+      "share": 0.931,
+      "role": "conductance",
+      "note": "Ro_spine = 0.931\u00b7Ro_tot \u2014 the dominant share."
+    }
+  ],
+  "observable": true
+}

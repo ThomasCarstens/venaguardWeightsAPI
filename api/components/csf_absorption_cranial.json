@@ -1,0 +1,18 @@
+{
+  "id": "csf_absorption_cranial",
+  "label": "CSF absorption, cranial",
+  "frm": "intracranial_csf",
+  "to": "dural_sinus",
+  "element": "Ro (0.069\u00b7Ro_tot)",
+  "description": "Arachnoid granulation absorption of CSF into the sinus. One-way.",
+  "kind": "interface",
+  "governed_by": [
+    {
+      "param": "csf_outflow_resistance",
+      "share": 0.069,
+      "role": "conductance",
+      "note": "Ro = 0.069\u00b7Ro_tot."
+    }
+  ],
+  "observable": true
+}

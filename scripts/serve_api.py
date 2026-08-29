@@ -5,7 +5,7 @@ The API is FILE-BACKED: model/stream_refit.jl appends a JSON object per window a
 flushes, so this server reads whatever is on disk at request time. A refit that is still
 running is served live; `?since=` lets a client poll for only the new records.
 
-    .venv-dash/bin/python3 scripts/serve_api.py            # http://127.0.0.1:877
+    .venv-dash/bin/python3 scripts/serve_api.py            # http://127.0.0.1:8770
     .venv-dash/bin/python3 scripts/serve_api.py --check     # validate, don't serve
 
 Endpoints
@@ -15,6 +15,16 @@ Endpoints
     GET /stream/<patient>/<id>             the full stream, newest last
     GET /stream/<patient>/<id>?since=<t>   only records with t_end > t  (incremental poll)
     GET /latest/<patient>                  most recent value of every parameter + status
+    GET /dashboard                         standing-watch page (web/dashboard.html)
+
+  The COMPONENT view — the same fit expressed as weights on circuit parts rather than on
+  model parameters. This is what a reader who does not know the model should consume.
+    GET /circuit                           the segmentation: compartments + interfaces
+    GET /components                        every component's static metadata
+    GET /components/<id>                   one component
+    GET /components/<patient>/stream       component weights, one record per window
+        ?since=<t>                         only windows with t_end > t
+    GET /components/<patient>/latest       the most recent window, ranked by weight
 """
 import json, os, sys, argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -22,6 +32,7 @@ from urllib.parse import urlparse, parse_qs
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = os.path.join(ROOT, "api")
+WEB = os.path.join(ROOT, "web")
 
 
 def _index():
@@ -82,6 +93,43 @@ def _latest(patient):
     return out
 
 
+def _circuit():
+    p = os.path.join(API, "circuit.json")
+    if not os.path.isfile(p):
+        return None
+    with open(p) as f:
+        return json.load(f)
+
+
+def _component_meta(cid):
+    p = os.path.join(API, "components", f"{cid}.json")
+    if not os.path.isfile(p):
+        return None
+    with open(p) as f:
+        return json.load(f)
+
+
+def _components(patient, since=None):
+    """The translated stream. Same torn-final-line tolerance as _stream: translate_stream.py
+    may be re-running while a client polls."""
+    p = os.path.join(API, "stream", patient, "_components.jsonl")
+    if not os.path.isfile(p):
+        return None
+    out = []
+    with open(p) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if since is None or rec.get("t_end", -1e9) > since:
+                out.append(rec)
+    return out
+
+
 class Handler(BaseHTTPRequestHandler):
     def _send(self, obj, code=200):
         body = json.dumps(obj, indent=1).encode()
@@ -92,6 +140,21 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_html(self, path):
+        """Serve the dashboard from the API's own origin, so N browser windows can poll it
+        with no CORS and no build step. Read per request: edit the file, reload the tab."""
+        try:
+            with open(path, "rb") as f:
+                body = f.read()
+        except OSError:
+            return self._send({"error": "not found", "detail": path}, 404)
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self):
         u = urlparse(self.path)
         parts = [p for p in u.path.split("/") if p]
@@ -99,6 +162,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if not parts:
                 return self._send(_index())
+            if parts[0] == "dashboard":
+                return self._send_html(os.path.join(WEB, "dashboard.html"))
             if parts[0] == "params":
                 if len(parts) == 1:
                     return self._send({p: _meta(p) for p in _index()["params"]})
@@ -111,6 +176,30 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send({"error": "no such stream"}, 404)
                 return self._send({"patient": parts[1], "param": parts[2],
                                    "n": len(s), "records": s})
+            if parts[0] == "circuit":
+                c = _circuit()
+                return self._send(c) if c else self._send(
+                    {"error": "no circuit.json", "fix": "python3 scripts/translate_stream.py"}, 404)
+            if parts[0] == "components":
+                if len(parts) == 1:
+                    c = _circuit()
+                    if not c:
+                        return self._send({"error": "no circuit.json"}, 404)
+                    return self._send({d["id"]: d for d in c["compartments"] + c["interfaces"]})
+                # /components/<patient>/stream|latest  vs  /components/<component_id>
+                if len(parts) == 3 and parts[2] in ("stream", "latest"):
+                    since = float(q["since"][0]) if "since" in q else None
+                    recs = _components(parts[1], since if parts[2] == "stream" else None)
+                    if recs is None:
+                        return self._send({"error": "no component stream", "patient": parts[1],
+                                           "fix": "python3 scripts/translate_stream.py"}, 404)
+                    if parts[2] == "latest":
+                        return self._send({"patient": parts[1],
+                                           "window": recs[-1] if recs else None,
+                                           "n_windows": len(recs)})
+                    return self._send({"patient": parts[1], "n": len(recs), "records": recs})
+                m = _component_meta(parts[1])
+                return self._send(m) if m else self._send({"error": "no such component"}, 404)
             if parts[0] == "latest" and len(parts) == 2:
                 return self._send({"patient": parts[1], "params": _latest(parts[1])})
             return self._send({"error": "unknown route", "see": "/"}, 404)
@@ -149,13 +238,53 @@ def check():
         tot = sum(n.values())
         print(f"  patient {pat}: {tot} records" +
               ("" if tot else "   (no stream yet — run model/stream_refit.jl)"))
+
+    # --- the component view -------------------------------------------------
+    print()
+    c = _circuit()
+    if c is None:
+        print("  circuit.json MISSING — run python3 scripts/translate_stream.py")
+        return 1 if bad else 0
+    comps = c["compartments"] + c["interfaces"]
+    obs = [x["id"] for x in comps if x["observable"]]
+    print(f"circuit: {len(c['compartments'])} compartments + {len(c['interfaces'])} "
+          f"interfaces, {len(obs)} observable")
+    # every component a parameter claims to govern must exist in the segmentation
+    known = {x["id"] for x in comps}
+    for x in comps:
+        for g in x["governed_by"]:
+            if g["param"] not in idx["params"]:
+                print(f"  {x['id']}: governed_by unknown parameter {g['param']}"); bad += 1
+    # and every parameter must govern something, or it is published and unreachable
+    governed = {g["param"] for x in comps for g in x["governed_by"]}
+    orphan = [p for p in idx["params"] if p not in governed]
+    if orphan:
+        print(f"  parameters governing NO component: {orphan}"); bad += 1
+    for pat in idx["patients"]:
+        recs = _components(pat)
+        if not recs:
+            print(f"  patient {pat}: no component stream"
+                  "   (run python3 scripts/translate_stream.py)")
+            continue
+        last = recs[-1]
+        unknown = [d["component"] for d in last["components"] if d["component"] not in known]
+        if unknown:
+            print(f"  patient {pat}: components not in circuit.json {unknown}"); bad += 1
+            continue
+        att = {}
+        for d in last["components"]:
+            att[d["attribution"]] = att.get(d["attribution"], 0) + 1
+        top = last["components"][0] if last["components"] else None
+        print(f"  patient {pat}: {len(recs)} windows, "
+              f"lead {top['component']} w={top['weight']:.2f} ({top['attribution']})"
+              f"   rules={last['rules_fired'] or '-'}   {att}")
     return 1 if bad else 0
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
-    ap.add_argument("--port", type=int, default=877)
+    ap.add_argument("--port", type=int, default=8770)
     a = ap.parse_args()
     if a.check:
         sys.exit(check())
@@ -163,4 +292,5 @@ if __name__ == "__main__":
     print(f"serving {API}\n  http://127.0.0.1:{a.port}/")
     print(f"  http://127.0.0.1:{a.port}/params/craniospinal_compliance")
     print(f"  http://127.0.0.1:{a.port}/latest/081")
+    print(f"  http://127.0.0.1:{a.port}/dashboard      <- open in as many windows as you like")
     srv.serve_forever()

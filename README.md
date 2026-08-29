@@ -8,6 +8,78 @@ Extracted from the `brainphysio_celia` research repository (`Model_6`), 2026-08-
 
 ---
 
+
+## The component view — what is actually abnormal, and where
+
+The six streamed parameters are model coordinates, not places. `E` is a coefficient in a
+compliance law; `Ro_tot` is one lumped resistance split two ways. A reader has to already
+know the model to know *what* is wrong. The component view translates a fitted parameter
+vector into weights on parts of the circuit.
+
+**The segmentation** (`GET /circuit`) follows the plotter's two hydrostatic panels
+(`build_tilt_panels` in the source repo):
+
+| | drawn against | compartments |
+|---|---|---|
+| `tilt_pressures_heart` | heart→brain column `Hs_Rvvs.Δp` | Pic, Psinus, Psys |
+| `tilt_pressures_spine` | spine column `Hs_Revp.Δp` | Pds, Po_spine, Pivp, Pevp |
+
+**(a) 9 compartments** — pressure nodes. Those carrying `hydrostatic_panel` are the ones
+the plotter references to a column; the rest close the circuit but are not drawn.
+**(b) 12 interfaces** — the flow elements between them (`frm` → `to`).
+
+**Only 8 of the 21 are observable.** A component with no governing parameter has no weight,
+and an absent weight means NOT ESTIMATED — never *normal*.
+
+### What a weight is
+
+`weight` is how far the governing parameter sits outside its healthy band — 0 inside,
+1.0 at the pathological bound, above 1 beyond it — multiplied by how well that window
+identified the parameter. Where several parameters govern one component the **largest**
+discounted excursion wins, not the sum: two parameters mildly out is not evidence of one
+severely abnormal component.
+
+It is **not** a probability, and not necessarily a claim about the patient. `attribution`
+says which:
+
+| attribution | meaning |
+|---|---|
+| `patient` | clinical bounds, identifiable in this window |
+| `model_referenced` | bounds anchored on the source model's default, not a human range |
+| `fit_quality` | a QC check on the fit (jugular geometry), not physiology |
+| `model_artifact` | RULEBOOK R1 fired — the excursion indicts the fit, not the patient |
+| `degenerate` | RULEBOOK R6 — read the pair as one poorly-determined combination |
+| `unidentifiable` | no governing parameter was identifiable; the value is guessed |
+
+### Routes
+
+```
+GET /circuit                        the segmentation
+GET /components                     every component's metadata
+GET /components/<id>                one component
+GET /components/<patient>/latest    most recent window, ranked by weight
+GET /components/<patient>/stream    all windows   (?since=<t> to poll)
+```
+
+Regenerate after any refit — it is pure post-processing, about a second:
+
+```bash
+python3 scripts/translate_stream.py
+```
+
+### What the four patients show
+
+Every patient leads with **`csf_absorption_cranial` / `csf_absorption_spinal`**, weight
+1.1–1.7, direction `low`. That is `csf_outflow_resistance` below its clinical floor in all
+four — and it is worth reading sceptically rather than as a finding: abnormally *low* CSF
+outflow resistance is the opposite of the NPH/IIH pattern, and 137 and 150 had `Ro_tot`
+pinned at a search bound in the static prefit. It may be telling you about the 0.069/0.931
+cranial/spinal split rather than about the patients.
+
+081 is the only patient where **R1 fires**, so its jugular and collateral weights are
+attributed `model_artifact` and should not be read clinically.
+
+
 ## ⚠ Patient data is NOT in this repository
 
 `data/` is **gitignored**. The estimator needs four de-identified 100 Hz ICU recordings
@@ -64,9 +136,15 @@ it is repeated in every metadata file rather than stated once here.
 bash scripts/setup_data.sh /path/to/brainphysio_celia   # fetch recordings
 julia --project=. -e 'using Pkg; Pkg.instantiate()'     # only dependency is Optim
 julia --project=. model/api_spec.jl                     # -> api/params/*.json
-_PATIENT=081 julia --project=. model/stream_refit.jl    # -> api/stream/081/*.jsonl
-python3 scripts/serve_api.py                            # http://127.0.0.1:877
+_PATIENT=081 julia --project=. model/stream_filter.jl   # -> api/stream/081/*.jsonl  (~90 s)
+python3 scripts/serve_api.py                            # http://127.0.0.1:8770
 ```
+
+`notebooks/stream_explorer.ipynb` drives all of this and watches the intervals collapse live.
+For a **standing watch**, open `http://127.0.0.1:8770/dashboard` instead — a Jupyter kernel
+has one execution queue, so a polling cell blocks the whole notebook, while the dashboard is
+a plain page you can open in as many windows as you want (one per patient, say). The server
+is threaded and file-backed, so readers never contend with each other or with the estimator.
 
 Validate without serving:
 
@@ -91,6 +169,7 @@ GET /params/<id>                         one parameter's description + bounds
 GET /stream/<patient>/<id>               full stream, newest last
 GET /stream/<patient>/<id>?since=<t>     only records with t_end > t  (incremental poll)
 GET /latest/<patient>                    most recent value of every parameter + status
+GET /dashboard                           standing-watch page, open in as many windows as you like
 ```
 
 A stream record:
@@ -104,6 +183,37 @@ The API is **file-backed**. `stream_refit.jl` appends one JSON object per window
 flushes, so a refit still in progress is served live and `?since=` polls only what is new.
 
 ---
+
+## Two estimators, and why there are two
+
+`stream_filter.jl` and `stream_refit.jl` write the same six streams in the same format and
+must never run at once for one patient — they open the same files with `"w"`.
+
+| | `stream_refit.jl` (batch) | `stream_filter.jl` (sequential) |
+|---|---|---|
+| method | re-fit the whole recording at each `t_end` | joint state+parameter filter, one step per sample |
+| cost per record | ~55 full re-integrations, ~2.5 min | 39 one-second integrations, ~0.2 s |
+| vs. real time | **~11x slower** | **~4.5x faster** |
+| resolution | as many windows as you can afford | every sample, 1 Hz |
+| interval | Fisher information at a converged optimum | filter covariance, given assumed process noise |
+| parameters | constant within a window | random walk (`_QTHETA`) |
+
+**The batch fit cannot run continuously and this is not an implementation problem.** The six
+fitted quantities are structural parameters of the ODE: change `E` and the trajectory differs
+from the first step, so no part of the previous window's simulation can be reused. Every
+candidate parameter vector costs a fresh integration of the entire recording — ~62 million
+RK4 steps per emitted record. Nothing incremental exists to exploit.
+
+The filter inverts that. It carries the state forward instead of re-deriving it, so a new
+sample costs one second of integration per perturbation direction rather than a full re-fit, and it
+runs ahead of the patient. What it gives up is stated in the file header and is not small:
+the interval becomes a filter covariance whose width depends on the process noise you assume,
+and parameters are permitted to drift rather than being constant. **Set `_QTHETA` too high
+and the filter will explain genuine model error by wandering the parameters — the stream
+will look responsive and mean nothing.**
+
+Treat the batch fit as the reference and the filter as the deployable one. Where they
+disagree, the batch fit is the claim the README's numbers are about.
 
 ## How the estimate is produced
 
@@ -144,11 +254,14 @@ estimate happens to fall.
 ```
 model/ude_cv.jl        13-state compact model of the craniospinal circuit (RK4, ~2.5 s/solve)
 model/api_spec.jl      writes api/params/*.json — the bounds contract
-model/stream_refit.jl  the expanding-window refitter
+model/stream_contract.jl  what both estimators must agree on: bounds, derivations, record bytes
+model/stream_refit.jl  the expanding-window refitter (batch, the reference)
+model/stream_filter.jl the sequential joint state-parameter filter (runs faster than real time)
 model/stream_all.sh    all four patients in parallel
 fit/*_compact.jl       per-patient starting parameters
 scripts/setup_data.sh  copy recordings from the source repository
 scripts/serve_api.py   HTTP server, standard library only
+web/dashboard.html     standing-watch page served at /dashboard (no build, no dependencies)
 api/params/*.json      generated metadata (committed — it is the contract)
 api/stream/            generated streams (gitignored)
 data/                  patient recordings (gitignored)

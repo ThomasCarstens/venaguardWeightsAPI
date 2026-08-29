@@ -1,0 +1,18 @@
+{
+  "id": "cerebral_arterial",
+  "label": "Cerebral arterial bed",
+  "state": "V_a / C_a",
+  "hydrostatic_panel": null,
+  "description": "The intracranial arterial compartment, with autoregulating compliance. Its stroke volume is what each beat must push into the cranium.",
+  "plotter_trace": null,
+  "kind": "compartment",
+  "governed_by": [
+    {
+      "param": "arterial_compliance",
+      "share": 1.0,
+      "role": "storage",
+      "note": "Ca is the arterial compartment's compliance; it also scales the autoregulatory range \u0394C."
+    }
+  ],
+  "observable": true
+}

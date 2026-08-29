@@ -1,0 +1,18 @@
+{
+  "id": "spinal_dural_sac",
+  "label": "Spinal dural sac",
+  "state": "Psas",
+  "hydrostatic_panel": "tilt_pressures_spine",
+  "description": "The spinal CSF space (Pds). Takes CSF displaced from the cranium and is the compliant reserve the craniospinal system draws on.",
+  "plotter_trace": "Ro_spine.in.p",
+  "kind": "compartment",
+  "governed_by": [
+    {
+      "param": "craniospinal_compliance",
+      "share": 0.7,
+      "role": "storage",
+      "note": "the remaining 1\u2212\u03b1 of craniospinal compliance is spinal."
+    }
+  ],
+  "observable": true
+}

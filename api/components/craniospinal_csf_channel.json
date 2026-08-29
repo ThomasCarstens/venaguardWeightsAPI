@@ -1,0 +1,11 @@
+{
+  "id": "craniospinal_csf_channel",
+  "label": "Craniospinal CSF channel",
+  "frm": "intracranial_csf",
+  "to": "spinal_dural_sac",
+  "element": "Rspine",
+  "description": "The foramen magnum route. Lets CSF displace from cranium to spinal sac, which is how the craniospinal compliance reserve is reached.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

@@ -1,0 +1,15 @@
+{
+ "id": "jugular_resting_area",
+ "unit": "cm2 per vein",
+ "fitted_parameter": "k_ijvs",
+ "physiological_equivalent_description": "Resting internal jugular cross-section implied by the fitted tube-law stiffness. STREAMED AS QUALITY CONTROL, NOT AS A DIAGNOSIS: Model_6/structural_diagnosis shows the fit drives this to 5-12 cm2 (about 205 mL of jugular) which is roughly ten times physiological, and that this artefact is what causes the model's ICP pulse-amplitude failure. A bedside ultrasound falsifies it in thirty seconds. Read a value outside the healthy band as evidence the FIT is wrong, not that the patient is.",
+ "min_pathological_bound": 0.3,
+ "min_healthy_bound": 0.8,
+ "max_healthy_bound": 2.0,
+ "max_pathological_bound": 4.0,
+ "direction_of_concern": "high",
+ "bound_provenance": "qc",
+ "bound_source": "supine IJV cross-section ~0.8-2.0 cm2; posture- and respiration-dependent",
+ "caveat": "No healthy controls exist in this dataset - all four recordings are ICU patients. Healthy bounds are from literature, not from a control group measured with this pipeline.",
+ "stream": "../stream/{patient}/jugular_resting_area.jsonl"
+}

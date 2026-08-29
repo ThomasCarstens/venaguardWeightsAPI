@@ -1,0 +1,11 @@
+{
+  "id": "paravertebral",
+  "label": "Paravertebral / azygos",
+  "state": "P_px",
+  "hydrostatic_panel": "tilt_pressures_spine",
+  "description": "The paravertebral compartment spinal CSF absorbs into and the plexus drains through (Po_spine).",
+  "plotter_trace": "Ro_spine.out.p",
+  "kind": "compartment",
+  "governed_by": [],
+  "observable": false
+}

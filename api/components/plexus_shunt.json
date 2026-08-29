@@ -1,0 +1,11 @@
+{
+  "id": "plexus_shunt",
+  "label": "Plexus to systemic shunt",
+  "frm": "vertebral_plexus",
+  "to": "systemic_venous",
+  "element": "Rt",
+  "description": "Direct low-resistance connection from the plexus to systemic return.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}

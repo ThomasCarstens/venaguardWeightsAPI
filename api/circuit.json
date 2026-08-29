@@ -1,0 +1,299 @@
+{
+  "description": "Segmentation of the Model 6 cerebral circuit into (a) COMPARTMENTS \u2014 pressure nodes, of which those carrying `hydrostatic_panel` are the ones the plotter draws against their hydrostatic column \u2014 and (b) INTERFACES, the flow elements between them.",
+  "hydrostatic_panels": {
+    "tilt_pressures_heart": "Pic, Psinus, Psys against the heart->brain column (Hs_Rvvs.\u0394p)",
+    "tilt_pressures_spine": "Pds, Po_spine, Pivp, Pevp against the spine column (Hs_Revp.\u0394p)"
+  },
+  "caveat": "Only 6 of the 21 components are governed by a streamed parameter (`observable: true`). The rest are fixed at model defaults and are listed so the topology is complete \u2014 an absent weight means NOT ESTIMATED, never NORMAL.",
+  "compartments": [
+    {
+      "id": "cerebral_arterial",
+      "label": "Cerebral arterial bed",
+      "state": "V_a / C_a",
+      "hydrostatic_panel": null,
+      "description": "The intracranial arterial compartment, with autoregulating compliance. Its stroke volume is what each beat must push into the cranium.",
+      "plotter_trace": null,
+      "kind": "compartment",
+      "governed_by": [
+        {
+          "param": "arterial_compliance",
+          "share": 1.0,
+          "role": "storage",
+          "note": "Ca is the arterial compartment's compliance; it also scales the autoregulatory range \u0394C."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "intracranial_csf",
+      "label": "Intracranial CSF / brain",
+      "state": "Pic",
+      "hydrostatic_panel": "tilt_pressures_heart",
+      "description": "The intracranial compartment whose pressure IS the measured ICP. Referenced to the heart-to-brain hydrostatic column.",
+      "plotter_trace": "brain.ext.p",
+      "kind": "compartment",
+      "governed_by": [
+        {
+          "param": "craniospinal_compliance",
+          "share": 0.3,
+          "role": "storage",
+          "note": "E sets Ctot = 1/(E\u00b7(Pic\u2212Pcv)); \u03b1=0.3 of it is the cranial share."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "cerebral_venous",
+      "label": "Cerebral venous compartment",
+      "state": "Pv / V_v",
+      "hydrostatic_panel": null,
+      "description": "Cerebral veins between the capillary bed and the dural sinus.",
+      "plotter_trace": null,
+      "kind": "compartment",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "dural_sinus",
+      "label": "Dural venous sinus",
+      "state": "Psinus",
+      "hydrostatic_panel": "tilt_pressures_heart",
+      "description": "The sagittal/dural sinus. Sets the downstream pressure both cerebral venous outflow and cranial CSF absorption drain into.",
+      "plotter_trace": "brain.Rss.in.p",
+      "kind": "compartment",
+      "governed_by": [
+        {
+          "param": "sagittal_sinus_pressure",
+          "share": 1.0,
+          "role": "boundary_pressure",
+          "note": "Psinus is the sinus compartment's operating pressure, a boundary condition rather than a property of a wall."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "jugular_bulb",
+      "label": "Jugular bulb / outflow junction",
+      "state": "P_j",
+      "hydrostatic_panel": null,
+      "description": "The junction where cerebral outflow divides between the internal jugular and the vertebral collateral. This is where the compression acts.",
+      "plotter_trace": null,
+      "kind": "compartment",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "spinal_dural_sac",
+      "label": "Spinal dural sac",
+      "state": "Psas",
+      "hydrostatic_panel": "tilt_pressures_spine",
+      "description": "The spinal CSF space (Pds). Takes CSF displaced from the cranium and is the compliant reserve the craniospinal system draws on.",
+      "plotter_trace": "Ro_spine.in.p",
+      "kind": "compartment",
+      "governed_by": [
+        {
+          "param": "craniospinal_compliance",
+          "share": 0.7,
+          "role": "storage",
+          "note": "the remaining 1\u2212\u03b1 of craniospinal compliance is spinal."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "vertebral_plexus",
+      "label": "Vertebral venous plexus",
+      "state": "P_vv",
+      "hydrostatic_panel": "tilt_pressures_spine",
+      "description": "Internal/external vertebral plexus (Pivp \u2261 Pevp). The alternative drainage route when the jugular is occluded or the patient is upright.",
+      "plotter_trace": "Rivp.in.p / Revp.in.p",
+      "kind": "compartment",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "paravertebral",
+      "label": "Paravertebral / azygos",
+      "state": "P_px",
+      "hydrostatic_panel": "tilt_pressures_spine",
+      "description": "The paravertebral compartment spinal CSF absorbs into and the plexus drains through (Po_spine).",
+      "plotter_trace": "Ro_spine.out.p",
+      "kind": "compartment",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "systemic_venous",
+      "label": "Systemic venous return",
+      "state": "P_sys",
+      "hydrostatic_panel": "tilt_pressures_heart",
+      "description": "The systemic venous pool returning to the right heart (Psys).",
+      "plotter_trace": "Hs_Pa.out.p",
+      "kind": "compartment",
+      "governed_by": [],
+      "observable": false
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "arteriolar_bed",
+      "label": "Arteriolar bed (autoregulated)",
+      "frm": "cerebral_arterial",
+      "to": "cerebral_venous",
+      "element": "Ra",
+      "description": "Autoregulating arteriolar resistance. Sets cerebral blood flow and, through its compliance, the size of the arterial pulse entering the cranium.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "capillary_bed",
+      "label": "Capillary bed",
+      "frm": "cerebral_arterial",
+      "to": "cerebral_venous",
+      "element": "Rc",
+      "description": "Capillary resistance between the arterial and venous compartments.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "cerebral_venous_outflow",
+      "label": "Cerebral venous outflow",
+      "frm": "cerebral_venous",
+      "to": "dural_sinus",
+      "element": "Rv",
+      "description": "Drainage from the cerebral veins into the dural sinus.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "csf_absorption_cranial",
+      "label": "CSF absorption, cranial",
+      "frm": "intracranial_csf",
+      "to": "dural_sinus",
+      "element": "Ro (0.069\u00b7Ro_tot)",
+      "description": "Arachnoid granulation absorption of CSF into the sinus. One-way.",
+      "kind": "interface",
+      "governed_by": [
+        {
+          "param": "csf_outflow_resistance",
+          "share": 0.069,
+          "role": "conductance",
+          "note": "Ro = 0.069\u00b7Ro_tot."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "craniospinal_csf_channel",
+      "label": "Craniospinal CSF channel",
+      "frm": "intracranial_csf",
+      "to": "spinal_dural_sac",
+      "element": "Rspine",
+      "description": "The foramen magnum route. Lets CSF displace from cranium to spinal sac, which is how the craniospinal compliance reserve is reached.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "csf_absorption_spinal",
+      "label": "CSF absorption, spinal",
+      "frm": "spinal_dural_sac",
+      "to": "paravertebral",
+      "element": "Ro_spine (0.931\u00b7Ro_tot)",
+      "description": "Spinal CSF absorption \u2014 the larger share of total outflow resistance.",
+      "kind": "interface",
+      "governed_by": [
+        {
+          "param": "csf_outflow_resistance",
+          "share": 0.931,
+          "role": "conductance",
+          "note": "Ro_spine = 0.931\u00b7Ro_tot \u2014 the dominant share."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "sinus_to_jugular",
+      "label": "Sinus to jugular bulb",
+      "frm": "dural_sinus",
+      "to": "jugular_bulb",
+      "element": "Rss",
+      "description": "Transverse/sigmoid sinus run from the dural sinus to the bulb.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "internal_jugular",
+      "label": "Internal jugular vein",
+      "frm": "jugular_bulb",
+      "to": "systemic_venous",
+      "element": "Rijvs (collapsible tube law)",
+      "description": "The dominant venous outflow route when supine. A collapsible tube: external pressure collapses its area A and its resistance rises as ~A\u207b\u00b2. This is the vessel the compression manoeuvre occludes.",
+      "kind": "interface",
+      "governed_by": [
+        {
+          "param": "jugular_resting_area",
+          "share": 1.0,
+          "role": "geometry",
+          "note": "derived from k_ijvs through the tube law at rest; governs how readily the vein collapses under the compression."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "vertebral_collateral",
+      "label": "Vertebral venous collateral",
+      "frm": "jugular_bulb",
+      "to": "vertebral_plexus",
+      "element": "Rvvs",
+      "description": "The parallel outflow path. Carries cerebral outflow when the jugular closes; if its resistance is low the occlusion costs almost nothing.",
+      "kind": "interface",
+      "governed_by": [
+        {
+          "param": "collateral_outflow_resistance",
+          "share": 1.0,
+          "role": "conductance",
+          "note": "Rvvs is the collateral resistance directly."
+        }
+      ],
+      "observable": true
+    },
+    {
+      "id": "plexus_drainage",
+      "label": "Vertebral plexus drainage",
+      "frm": "vertebral_plexus",
+      "to": "paravertebral",
+      "element": "Rivp / Revp",
+      "description": "Drainage of the vertebral plexus into the paravertebral compartment.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "azygos_return",
+      "label": "Azygos return",
+      "frm": "paravertebral",
+      "to": "systemic_venous",
+      "element": "Razy",
+      "description": "Azygos/hemiazygos return to the systemic venous pool.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    },
+    {
+      "id": "plexus_shunt",
+      "label": "Plexus to systemic shunt",
+      "frm": "vertebral_plexus",
+      "to": "systemic_venous",
+      "element": "Rt",
+      "description": "Direct low-resistance connection from the plexus to systemic return.",
+      "kind": "interface",
+      "governed_by": [],
+      "observable": false
+    }
+  ]
+}

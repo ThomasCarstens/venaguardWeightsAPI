@@ -1,0 +1,18 @@
+{
+  "id": "dural_sinus",
+  "label": "Dural venous sinus",
+  "state": "Psinus",
+  "hydrostatic_panel": "tilt_pressures_heart",
+  "description": "The sagittal/dural sinus. Sets the downstream pressure both cerebral venous outflow and cranial CSF absorption drain into.",
+  "plotter_trace": "brain.Rss.in.p",
+  "kind": "compartment",
+  "governed_by": [
+    {
+      "param": "sagittal_sinus_pressure",
+      "share": 1.0,
+      "role": "boundary_pressure",
+      "note": "Psinus is the sinus compartment's operating pressure, a boundary condition rather than a property of a wall."
+    }
+  ],
+  "observable": true
+}

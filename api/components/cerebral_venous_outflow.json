@@ -1,0 +1,11 @@
+{
+  "id": "cerebral_venous_outflow",
+  "label": "Cerebral venous outflow",
+  "frm": "cerebral_venous",
+  "to": "dural_sinus",
+  "element": "Rv",
+  "description": "Drainage from the cerebral veins into the dural sinus.",
+  "kind": "interface",
+  "governed_by": [],
+  "observable": false
+}
