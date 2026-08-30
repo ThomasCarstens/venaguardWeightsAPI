@@ -37,9 +37,9 @@
 % other content is machine output, the transcript is the only evidence that came from the
 % patient, and it was previously the smallest thing on the page.
 \newcommand{\hdrbig}[2][]{%
-  {\sffamily\bfseries\normalsize\color{ink}\MakeUppercase{#2}}%
+  {\sffamily\bfseries\large\color{ink}\MakeUppercase{#2}}%
   {\sffamily\small\color{faint}\,#1}%
-  \par\vspace{2pt}{\color{rule}\hrule height .8pt}\vspace{4pt}}
+  \par\vspace{2pt}{\color{rule}\hrule height .9pt}\vspace{5pt}}
 \newcommand{\Q}{{\bfseries\normalsize ?}}
 
 % --- anatomy pins. \pinXXXX puts the number on the point; \leadXXXX draws a leader.
@@ -69,8 +69,8 @@
 
 %================================================================ transcript (first)
 \hdrbig[--- verbatim, no clinician inference]{What the patient said}
-\small
-\setlength{\extrarowheight}{2.5pt}
+\normalsize
+\setlength{\extrarowheight}{3.5pt}
 \begin{tabularx}{\linewidth}{@{}l l X l@{}}
 \toprule
 \textbf{Point} & \textbf{Time} & \textbf{Said} & \textbf{Requests}\\
@@ -126,7 +126,13 @@ below are right.\par}
 {\sffamily\footnotesize\color{faint} the CSF and venous circuit as 9 compartments and
 12 interfaces \;\textperiodcentered\; colour = status, number = key below}\\[3pt]
 {\color{ink}\hrule height 1.1pt}
-\vspace{4pt}
+\vspace{5pt}
+
+{\sffamily\bfseries\Large\color{ink} The digital twin suggests investigating these zones.}\\[2pt]
+{\sffamily\footnotesize\color{faint} Start with {\color{ccrit}\textbf{red}}. {\color{carte}\textbf{Orange}}
+is the model correcting its own arithmetic --- not a finding in this patient. Grey was not
+measured at all.}
+\vspace{5pt}
 
 \centering
 \begin{tikzpicture}
@@ -199,33 +205,33 @@ the windows where that worked. Where it did not, the value is a guess and is mar
 
 \vspace{6pt}
 \hdr{Component key}
-{\scriptsize
+{\footnotesize
 \begin{tabular}{@{}r@{~}l l@{}}
-    {\color{cwarn}$\bullet$}~1 & Cerebral arterial & {\scriptsize w\,0.39} \\
-    {\color{ccrit}$\bullet$}~2 & Intracranial CSF & {\scriptsize \textbf{w\,0.63}} \\
-    {\color{cunev}$\bullet$}~3 & Cerebral venous & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~4 & Arteriolar bed & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~5 & Capillary bed & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~6 & Cerebral venous outflow & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~7 & Craniospinal CSF channel & {\scriptsize \Q}\\
+    {\color{cwarn}$\bullet$}~1 & Cerebral arterial & w\,0.39 \\
+    {\color{ccrit}$\bullet$}~2 & Intracranial CSF & \textbf{w\,0.63} \\
+    {\color{cunev}$\bullet$}~3 & Cerebral venous & \Q \\
+    {\color{cunev}$\bullet$}~4 & Arteriolar bed & \Q \\
+    {\color{cunev}$\bullet$}~5 & Capillary bed & \Q \\
+    {\color{cunev}$\bullet$}~6 & Cerebral venous outflow & \Q \\
+    {\color{cunev}$\bullet$}~7 & Craniospinal CSF channel & \Q\\
 \end{tabular} \hfill
 \begin{tabular}{@{}r@{~}l l@{}}
-    {\color{cunev}$\bullet$}~8 & Sinus to jugular bulb & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~9 & Jugular bulb & {\scriptsize \Q} \\
-    {\color{carte}$\bullet$}~10 & Internal jugular & {\scriptsize \textbf{ARTEFACT}} \\
-    {\color{cunev}$\bullet$}~11 & Systemic venous & {\scriptsize \Q} \\
-    {\color{csafe}$\bullet$}~12 & Dural sinus & {\scriptsize w\,0.11} \\
-    {\color{ccrit}$\bullet$}~13 & CSF absorption, cranial & {\scriptsize \textbf{w\,1.53}} \\
-    {\color{carte}$\bullet$}~14 & Vertebral collateral & {\scriptsize \textbf{ARTEFACT}}\\
+    {\color{cunev}$\bullet$}~8 & Sinus to jugular bulb & \Q \\
+    {\color{cunev}$\bullet$}~9 & Jugular bulb & \Q \\
+    {\color{carte}$\bullet$}~10 & Internal jugular & \textbf{ARTEFACT} \\
+    {\color{cunev}$\bullet$}~11 & Systemic venous & \Q \\
+    {\color{csafe}$\bullet$}~12 & Dural sinus & w\,0.11 \\
+    {\color{ccrit}$\bullet$}~13 & CSF absorption, cranial & \textbf{w\,1.53} \\
+    {\color{carte}$\bullet$}~14 & Vertebral collateral & \textbf{ARTEFACT}\\
 \end{tabular} \hfill
 \begin{tabular}{@{}r@{~}l l@{}}
-    {\color{cunev}$\bullet$}~15 & Vertebral plexus & {\scriptsize \Q} \\
-    {\color{ccrit}$\bullet$}~16 & Spinal dural sac & {\scriptsize \textbf{w\,0.63}} \\
-    {\color{cunev}$\bullet$}~17 & Azygos return & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~18 & Paravertebral & {\scriptsize \Q} \\
-    {\color{ccrit}$\bullet$}~19 & CSF absorption, spinal & {\scriptsize \textbf{w\,1.53}} \\
-    {\color{cunev}$\bullet$}~20 & Plexus drainage & {\scriptsize \Q} \\
-    {\color{cunev}$\bullet$}~21 & Plexus shunt & {\scriptsize \Q}\\
+    {\color{cunev}$\bullet$}~15 & Vertebral plexus & \Q \\
+    {\color{ccrit}$\bullet$}~16 & Spinal dural sac & \textbf{w\,0.63} \\
+    {\color{cunev}$\bullet$}~17 & Azygos return & \Q \\
+    {\color{cunev}$\bullet$}~18 & Paravertebral & \Q \\
+    {\color{ccrit}$\bullet$}~19 & CSF absorption, spinal & \textbf{w\,1.53} \\
+    {\color{cunev}$\bullet$}~20 & Plexus drainage & \Q \\
+    {\color{cunev}$\bullet$}~21 & Plexus shunt & \Q\\
 \end{tabular}
 \par}
 \vspace{3pt}

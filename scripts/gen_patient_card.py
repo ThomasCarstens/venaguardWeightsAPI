@@ -60,7 +60,7 @@ cols = [key_lines[i * col:(i + 1) * col] for i in range(3)]
 keytex = []
 for c in cols:
     body = " \\\\\n".join(
-        f"    {{\\color{{c{st}}}$\\bullet$}}~{n} & {lab} & {{\\scriptsize {mark}}}"
+        f"    {{\\color{{c{st}}}$\\bullet$}}~{n} & {lab} & {mark}"
         for (n, lab, st, mark) in c)
     keytex.append("\\begin{tabular}{@{}r@{~}l l@{}}\n" + body + "\\\\\n\\end{tabular}")
 
@@ -103,9 +103,9 @@ TEX = r"""\documentclass[9pt,a4paper]{extarticle}
 % other content is machine output, the transcript is the only evidence that came from the
 % patient, and it was previously the smallest thing on the page.
 \newcommand{\hdrbig}[2][]{%
-  {\sffamily\bfseries\normalsize\color{ink}\MakeUppercase{#2}}%
+  {\sffamily\bfseries\large\color{ink}\MakeUppercase{#2}}%
   {\sffamily\small\color{faint}\,#1}%
-  \par\vspace{2pt}{\color{rule}\hrule height .8pt}\vspace{4pt}}
+  \par\vspace{2pt}{\color{rule}\hrule height .9pt}\vspace{5pt}}
 \newcommand{\Q}{{\bfseries\normalsize ?}}
 
 % --- anatomy pins. \pinXXXX puts the number on the point; \leadXXXX draws a leader.
@@ -135,8 +135,8 @@ TEX = r"""\documentclass[9pt,a4paper]{extarticle}
 
 %================================================================ transcript (first)
 \hdrbig[--- verbatim, no clinician inference]{What the patient said}
-\small
-\setlength{\extrarowheight}{2.5pt}
+\normalsize
+\setlength{\extrarowheight}{3.5pt}
 \begin{tabularx}{\linewidth}{@{}l l X l@{}}
 \toprule
 \textbf{Point} & \textbf{Time} & \textbf{Said} & \textbf{Requests}\\
@@ -192,7 +192,13 @@ below are right.\par}
 {\sffamily\footnotesize\color{faint} the CSF and venous circuit as 9 compartments and
 12 interfaces \;\textperiodcentered\; colour = status, number = key below}\\[3pt]
 {\color{ink}\hrule height 1.1pt}
-\vspace{4pt}
+\vspace{5pt}
+
+{\sffamily\bfseries\Large\color{ink} The digital twin suggests investigating these zones.}\\[2pt]
+{\sffamily\footnotesize\color{faint} Start with {\color{ccrit}\textbf{red}}. {\color{carte}\textbf{Orange}}
+is the model correcting its own arithmetic --- not a finding in this patient. Grey was not
+measured at all.}
+\vspace{5pt}
 
 \centering
 \begin{tikzpicture}
@@ -244,7 +250,7 @@ the windows where that worked. Where it did not, the value is a guess and is mar
 
 \vspace{6pt}
 \hdr{Component key}
-{\scriptsize
+{\footnotesize
 __KEY0__ \hfill
 __KEY1__ \hfill
 __KEY2__

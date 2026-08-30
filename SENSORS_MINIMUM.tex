@@ -106,20 +106,23 @@
   \fill[elec] ($(current page.north west)+(0,-4.15cm)$) rectangle
               ($(current page.north east)+(0,-4.28cm)$);
 \end{tikzpicture}
-\vspace*{-0.35cm}
-{\color{white}\sffamily
-  {\fontsize{8}{8}\selectfont\color{elec!35!white}\textbf{COMPANION TO SENSORS.MD \;\textperiodcentered\;
-   TIER 0}}\\[7pt]
-  {\fontsize{27}{29}\selectfont\bfseries SENSORS\_MINIMUM}\\[5pt]
-  {\fontsize{12.5}{15}\selectfont A jugular compression with a blood-pressure cuff\\
-   and seven electrodes --- and no burr hole.}\\[9pt]
-  {\fontsize{8.2}{8.2}\selectfont\color{white!62!ink}%
+\vspace*{-0.30cm}
+{\color{white}\sffamily\setlength{\parskip}{0pt}
+  {\fontsize{8}{10}\selectfont\color{elec!38!white}\textbf{COMPANION TO SENSORS.MD
+   \;\textperiodcentered\; TIER 0}\par}
+  \vspace{9pt}
+  {\fontsize{26}{28}\selectfont\bfseries SENSORS\_MINIMUM\par}
+  \vspace{5pt}
+  {\fontsize{12}{14.5}\selectfont A jugular compression with a blood-pressure cuff\\
+   and seven electrodes --- and no burr hole.\par}
+  \vspace{11pt}
+  {\fontsize{8}{10}\selectfont\color{white!62!ink}%
   \tikz[baseline=-.6ex]\filldraw[cuff] (0,0) circle (1.5pt);\, 1 CUFF \quad
   \tikz[baseline=-.6ex]\filldraw[elec] (0,0) circle (1.5pt);\, 4 NECK ELECTRODES \quad
   \tikz[baseline=-.6ex]\filldraw[ecg] (0,0) circle (1.5pt);\, 3 ECG ELECTRODES \quad
-  \tikz[baseline=-.6ex]\filldraw[bolt] (0,0) circle (1.5pt);\, 0 INTRACRANIAL DEVICES}
+  \tikz[baseline=-.6ex]\filldraw[bolt] (0,0) circle (1.5pt);\, 0 INTRACRANIAL DEVICES\par}
 }
-\vspace{1.05cm}
+\vspace{0.95cm}
 
 \begin{cbox}[warn]{Design, not result}
 Nothing here was measured. \textbf{There is no impedance channel in this dataset}, so no
@@ -159,131 +162,111 @@ pointed not at the patient but at the model.
 %========================================================= 2
 \Sec{The kit}
 
-\vspace{-2pt}
+\vspace{-3pt}
 \begin{center}
 \begin{tikzpicture}[x=1mm,y=1mm,font=\sffamily]
+\newcommand{\ttl}[3]{\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (#1,101) {#2};
+  \node[font=\sffamily\fontsize{6.3}{6.3}\selectfont,text=faint,anchor=west] at (#1,96.5) {#3};}
 
-%------------------------------------------------ left: the patient, schematic
-\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (0,101) {THE PATIENT};
-\node[font=\sffamily\scriptsize,text=faint,anchor=west] at (0,96)
-  {supine, head neutral and \emph{fixed}};
+%================================================ A — the patient
+\ttl{0}{THE PATIENT}{supine, head neutral and \emph{fixed}}
 
-% torso + shoulders
-\fill[skin] (8,18) rectangle (52,58);
-\draw[rounded corners=6pt,skin,fill=skin] (8,18) rectangle (52,60);
-% arm
-\draw[rounded corners=4pt,skin,fill=skin] (52,20) rectangle (64,54);
-% neck
-\fill[skin] (23.5,56) rectangle (36.5,76);
-% head
-\filldraw[skin,draw=skin] (30,88) circle (11.5);
-\fill[skin] (23.5,74) rectangle (36.5,80);
-% ear
-\draw[faint,line width=.5pt] (37,87) arc (90:270:2.2 and 3);
+\draw[rounded corners=4pt,fill=skin,draw=skin]  (0,22)   rectangle (4.5,58);   % arm
+\draw[rounded corners=4pt,fill=skin,draw=skin]  (45.5,22) rectangle (50,58);   % arm
+\draw[rounded corners=5pt,fill=skin,draw=skin]  (6,18)   rectangle (44,66);    % torso
+\fill[skin] (18,62) rectangle (32,79);                                        % neck
+\filldraw[skin,draw=skin] (25,86) circle (9.5);                               % head
+\draw[faint,line width=.45pt] (34.3,86.5) arc (90:270:1.9 and 2.6);           % ear
 
-% the internal jugular, running the neck
-\draw[vein,line width=2.6pt,line cap=round] (33.6,79) .. controls (34.4,72) and (34.0,66) .. (32.6,56.5);
-\draw[vein,line width=2.6pt,line cap=round,opacity=.35] (26.4,79) .. controls (25.6,72) and (26.0,66) .. (27.4,56.5);
+% the two internal jugulars
+\draw[vein,line width=2.2pt,line cap=round,opacity=.85] (28.6,79) -- (28.0,62.5);
+\draw[vein,line width=2.2pt,line cap=round,opacity=.30] (21.4,79) -- (22.0,62.5);
 
-% compression band
-\fill[bolt,opacity=.16,rounded corners=2pt] (21,64.5) rectangle (39,70.5);
-\draw[bolt,line width=.5pt,rounded corners=2pt] (21,64.5) rectangle (39,70.5);
-\draw[bolt,-{Latex[length=1.6mm]},line width=.6pt] (17.5,67.5) -- (20.6,67.5);
-\draw[bolt,-{Latex[length=1.6mm]},line width=.6pt] (42.5,67.5) -- (39.4,67.5);
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=bolt,anchor=west] at (43.2,67.5)
-  {manual, 118\,s};
+% the compression
+\fill[bolt,opacity=.15,rounded corners=1.5pt] (16,66.8) rectangle (34,71.6);
+\draw[bolt,line width=.5pt,rounded corners=1.5pt] (16,66.8) rectangle (34,71.6);
+\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (11.6,69.2) -- (15.5,69.2);
+\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (38.4,69.2) -- (34.5,69.2);
 
-% neck electrodes (right side of the neck)
-\foreach \y/\lab in {77.5/I+,72.0/V+,63.0/V--,57.5/I--} {
-  \draw[elec,fill=elec!14,rounded corners=1pt,line width=.6pt] (36.0,\y-1.4) rectangle (41.0,\y+1.4);
-  \node[font=\sffamily\bfseries\fontsize{5.4}{5.4}\selectfont,text=elec] at (38.5,\y) {\lab};
+% the four neck electrodes: V+ and V- straddle the compression (rule E3)
+\foreach \y/\lab in {76.4/I+,73.2/V+,60.6/V--,56.8/I--} {
+  \draw[elec,fill=elec!13,rounded corners=1pt,line width=.6pt] (19,\y-1.5) rectangle (31,\y+1.5);
+  \node[font=\sffamily\bfseries\fontsize{5.4}{5.4}\selectfont,text=elec] at (25,\y) {\lab};
 }
-\draw[elec,line width=.4pt] (41.2,77.5) -- (47,84) node[right,font=\sffamily\fontsize{6}{6}\selectfont,text=elec,inner sep=1pt] {4 neck electrodes};
-
-% ECG
-\foreach \x/\y in {14/52, 46/52, 30/26} {
-  \filldraw[ecg,fill=ecg!16,rounded corners=1pt,line width=.6pt] (\x-2.2,\y-2.2) rectangle (\x+2.2,\y+2.2);
-  \filldraw[ecg] (\x,\y) circle (.7);
+% the three ECG electrodes
+\foreach \x/\y in {12/49, 38/49, 25/27} {
+  \filldraw[ecg,fill=ecg!15,rounded corners=1pt,line width=.55pt]
+    (\x-2.3,\y-2.3) rectangle (\x+2.3,\y+2.3);
+  \filldraw[ecg] (\x,\y) circle (.75);
 }
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=ecg,anchor=north] at (30,22) {3 ECG electrodes};
+% the cuff
+\fill[cuff,opacity=.8,rounded corners=1.5pt] (44.6,35) rectangle (50.9,45);
 
-% cuff
-\fill[cuff,opacity=.75,rounded corners=2pt] (51,36) rectangle (65,48);
-\node[font=\sffamily\bfseries\fontsize{5.6}{5.6}\selectfont,text=white] at (58,42) {NIBP};
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=cuff,anchor=west] at (66,42) {cuff};
+% legend, in place of leader lines
+\node[anchor=north west,font=\sffamily\fontsize{5.8}{8}\selectfont,text=mid,align=left,inner sep=0]
+  at (0,15) {%
+  \textcolor{elec}{$\blacksquare$}~4 neck electrodes, tetrapolar\quad
+  \textcolor{ecg}{$\blacksquare$}~3 ECG\\
+  \textcolor{cuff}{$\blacksquare$}~NIBP cuff\quad
+  \textcolor{bolt}{$\blacksquare$}~manual compression, 118\,s};
 
-%------------------------------------------------ zoom wedge
-\fill[elec,opacity=.07] (41.4,79) -- (41.4,56) -- (86,44) -- (86,96) -- cycle;
+%================================================ B — the sensing span
+\ttl{68}{THE SENSING SPAN}{tetrapolar, 50--100\,kHz, ${\sim}0.5$\,mA}
 
-%------------------------------------------------ right: the tetrapolar detail
-\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (88,101) {THE SENSING SPAN};
-\node[font=\sffamily\scriptsize,text=faint,anchor=west] at (88,96)
-  {tetrapolar, 50--100\,kHz, ${\sim}$0.5\,mA};
-
-% neck segment
-\draw[rounded corners=3pt,fill=skin!55,draw=rulec,line width=.6pt] (88,46) rectangle (116,92);
-% vein through it, tapered at the compression
-\fill[vein,opacity=.85]
-  (105,92) .. controls (106.6,84) and (106.4,79) .. (106.0,74)
-  -- (107.4,74) .. controls (107.8,79) and (108.0,84) .. (108.6,92) -- cycle;
-\fill[vein,opacity=.85]
-  (105.4,66) .. controls (105.0,60) and (104.6,54) .. (104.2,46)
-  -- (109.4,46) .. controls (109.0,54) and (108.6,60) .. (108.2,66) -- cycle;
-\fill[vein,opacity=.35] (105.6,66) rectangle (108.0,74);
-% carotid
-\filldraw[crit,opacity=.45,draw=none] (97,70) circle (2.4);
-\node[font=\sffamily\fontsize{5.2}{5.2}\selectfont,text=crit,anchor=east] at (94.2,70) {carotid};
-
-% electrodes on the segment
-\foreach \y/\lab in {88/I+,80/V+,60/V--,50/I--} {
-  \draw[elec,fill=elec!16,rounded corners=1pt,line width=.7pt] (85.4,\y-2) rectangle (91.4,\y+2);
-  \node[font=\sffamily\bfseries\fontsize{5.6}{5.6}\selectfont,text=elec] at (88.4,\y) {\lab};
+\draw[rounded corners=3pt,fill=skin!55,draw=rulec,line width=.6pt] (79,42) rectangle (112,94);
+% current field, behind everything
+\foreach \b in {8,14,20} {
+  \draw[elec,opacity=.30,line width=.4pt,dashed]
+    (82.4,90) .. controls (82.4+\b,84) and (82.4+\b,54) .. (82.4,48);
 }
-% current field lines
-\foreach \b in {6,11,16} {
-  \draw[elec,opacity=.35,line width=.4pt,dashed]
-    (91.6,88) .. controls (91.6+\b,84) and (91.6+\b,54) .. (91.6,50);
+% the compressed zone
+\fill[bolt,opacity=.13] (79,64) rectangle (112,76);
+\draw[bolt,line width=.45pt,dashed] (79,64) -- (112,64);
+\draw[bolt,line width=.45pt,dashed] (79,76) -- (112,76);
+% the jugular, pinched where the thumbs are
+\fill[vein,opacity=.8]
+  (100,94) .. controls (100,82) and (102.9,79) .. (102.9,70)
+          .. controls (102.9,61) and (100,58)  .. (100,42)
+  -- (107,42) .. controls (107,58) and (104.1,61) .. (104.1,70)
+             .. controls (104.1,79) and (107,82) .. (107,94) -- cycle;
+% the carotid, sharing the span
+\filldraw[crit,opacity=.42,draw=none] (91,86) circle (2.3);
+\node[font=\sffamily\fontsize{5.2}{5.2}\selectfont,text=crit,anchor=west] at (93.8,86) {carotid};
+% electrodes
+\foreach \y/\lab in {90/I+,82/V+,56/V--,48/I--} {
+  \draw[elec,fill=elec!16,rounded corners=1pt,line width=.7pt] (76,\y-2) rectangle (82.4,\y+2);
+  \node[font=\sffamily\bfseries\fontsize{5.6}{5.6}\selectfont,text=elec] at (79.2,\y) {\lab};
 }
-\node[font=\sffamily\fontsize{5.4}{5.4}\selectfont,text=elec,anchor=west] at (109.5,69)
-  {current field};
-
-% sense span brace
-\draw[mid,line width=.5pt] (82.5,80) -- (80.5,80) -- (80.5,60) -- (82.5,60);
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=east,rotate=90] at (79.5,70)
+% the sense span
+\draw[mid,line width=.5pt] (75,82) -- (73.2,82) -- (73.2,56) -- (75,56);
+\node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=south,rotate=90] at (72.4,69)
   {$L\approx8$\,cm};
+\node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=bolt,anchor=west] at (113,70) {compression};
 
-% compression on the detail
-\fill[bolt,opacity=.16] (88,66) rectangle (116,74);
-\draw[bolt,line width=.5pt,dashed] (88,66) -- (116,66);
-\draw[bolt,line width=.5pt,dashed] (88,74) -- (116,74);
-\node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=bolt,anchor=west] at (116.8,70)
-  {compression};
+%================================================ C — what Z does
+\ttl{134}{WHAT $Z$ DOES}{the model's own prediction}
 
-%------------------------------------------------ far right: what Z(t) does
-\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (132,101) {WHAT $Z$ DOES};
-\draw[rulec,line width=.6pt] (133,52) -- (133,90);
-\draw[rulec,line width=.6pt] (133,52) -- (172,52);
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=east,rotate=90] at (131,71) {$Z$ (\,$\Omega$\,)};
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=north] at (152,50) {time};
-% compression shading
-\fill[bolt,opacity=.10] (145,52) rectangle (159,90);
-% the trace: baseline, step up as the vein collapses, return
-\draw[elec,line width=1.2pt,line cap=round]
-  (134,58) .. controls (139,58.3) and (142,57.7) .. (145,58)
-  .. controls (146.4,58) and (146.6,80) .. (148,80.5)
-  .. controls (152,81.3) and (155,80.2) .. (159,80.6)
-  .. controls (160.4,80.6) and (160.6,58.4) .. (162,58.2)
-  .. controls (166,58.5) and (169,57.9) .. (171.5,58.2);
-% delta Z arrow
-\draw[mid,{Latex[length=1.3mm]}-{Latex[length=1.3mm]},line width=.5pt] (142.5,58) -- (142.5,80.5);
-\node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=east] at (141.6,69.5) {$\Delta Z$};
-\node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=faint,anchor=west] at (134,54.6) {$Z_0\approx25\,\Omega$};
-\node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=elec,anchor=west,align=left] at (148.5,86)
+\draw[rulec,line width=.6pt] (138,46) -- (138,92);
+\draw[rulec,line width=.6pt] (138,46) -- (176,46);
+\node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=south,rotate=90] at (135.5,69)
+  {$Z$\,($\Omega$)};
+\node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=north] at (158,44.5) {time};
+\fill[bolt,opacity=.10] (152,46) rectangle (166,92);
+\draw[elec,line width=1.2pt,line cap=round,line join=round]
+  (139,56) .. controls (144,56.3) and (148,55.7) .. (152,56)
+  .. controls (153.3,56) and (153.4,82) .. (154.7,82.4)
+  .. controls (158,83) and (162,81.8) .. (166,82.2)
+  .. controls (167.3,82.2) and (167.4,56.3) .. (168.7,56.1)
+  .. controls (172,56.4) and (174,55.9) .. (175.5,56.2);
+\draw[mid,{Latex[length=1.3mm]}-{Latex[length=1.3mm]},line width=.5pt] (147,56) -- (147,82.2);
+\node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=east] at (146.2,69) {$\Delta Z$};
+\node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=faint,anchor=west] at (139,52) {$Z_0\approx25\,\Omega$};
+\node[font=\sffamily\fontsize{5.6}{7}\selectfont,text=elec,align=center] at (159,66)
   {vein collapses\\$\Rightarrow$ less blood\\$\Rightarrow$ $Z$ \emph{rises}};
 
 \end{tikzpicture}
 \end{center}
-\vspace{-4pt}
+\vspace{-2pt}
 {\footnotesize\color{faint}Schematic. Electrode positions indicate the anatomical region,
 not a placement protocol. The sense span must straddle \textbf{the compressed segment} ---
 see rule~E3.\par}
