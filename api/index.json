@@ -5,6 +5,9 @@
   "stream": "stream/{patient}/{id}.jsonl",
   "stream_record": "{t_end, value, ci_lo, ci_hi, status, identifiable, rmse, n_solves}",
   "status_values": ["healthy", "borderline", "pathological", "unidentifiable"],
+  "events": "events/{patient}",
+  "events_record": "{t_on, t_off, duration, icp_base, icp_plateau, hr_bpm} — the compression, t=0 re-based to t_on",
+  "dashboard": "dashboard",
   "components": {
     "circuit": "circuit.json",
     "component_meta": "components/{id}.json",

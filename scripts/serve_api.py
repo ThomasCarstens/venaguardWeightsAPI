@@ -15,6 +15,7 @@ Endpoints
     GET /stream/<patient>/<id>             the full stream, newest last
     GET /stream/<patient>/<id>?since=<t>   only records with t_end > t  (incremental poll)
     GET /latest/<patient>                  most recent value of every parameter + status
+    GET /events/<patient>                  the compression window, for marking on a time axis
     GET /dashboard                         standing-watch page (web/dashboard.html)
 
   The COMPONENT view — the same fit expressed as weights on circuit parts rather than on
@@ -67,6 +68,23 @@ def _stream(patient, pid, since=None):
             if since is None or rec.get("t_end", -1e9) > since:
                 out.append(rec)
     return out
+
+
+def _events(patient):
+    """The jugular compression, as prepared: the CSVs are re-based so t = 0 is t_on, so the
+    manoeuvre occupies [0, duration]. Without this a client cannot say WHEN an interval
+    collapsed relative to the thing that supplied the information. Returns None if data/ is
+    absent (it is gitignored) and clients must degrade rather than fail."""
+    p = os.path.join(ROOT, "data", "jugular_prepared", "events.json")
+    if not os.path.isfile(p):
+        return None
+    with open(p) as f:
+        ev = json.load(f).get(patient)
+    if ev is None:
+        return None
+    return {"t_on": 0.0, "t_off": ev["duration"], "duration": ev["duration"],
+            "icp_base": ev.get("icp_base"), "icp_plateau": ev.get("icp_plateau"),
+            "hr_bpm": ev.get("hr_bpm")}
 
 
 def _latest(patient):
@@ -224,6 +242,9 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send({"patient": parts[1], "n": len(recs), "records": recs})
                 m = _component_meta(parts[1])
                 return self._send(m) if m else self._send({"error": "no such component"}, 404)
+            if parts[0] == "events" and len(parts) == 2:
+                e = _events(parts[1])
+                return self._send(e) if e else self._send({"error": "no events"}, 404)
             if parts[0] == "latest" and len(parts) == 2:
                 return self._send({"patient": parts[1], "params": _latest(parts[1])})
             return self._send({"error": "unknown route", "see": "/"}, 404)

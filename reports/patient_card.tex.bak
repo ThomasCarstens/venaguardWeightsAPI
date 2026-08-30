@@ -1,0 +1,214 @@
+\documentclass[9pt,a4paper]{extarticle}
+\usepackage[a4paper,top=1.1cm,bottom=1.0cm,left=1.2cm,right=1.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{charter}
+\usepackage[scaled=0.86]{helvet}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,backgrounds,fit}
+
+\definecolor{ink}{HTML}{1B2A38}
+\definecolor{faint}{HTML}{6E7B87}
+\definecolor{rule}{HTML}{C3CCD4}
+\definecolor{safe}{HTML}{2E8B57}
+\definecolor{warn}{HTML}{D98A00}
+\definecolor{crit}{HTML}{C0392B}
+\definecolor{arte}{HTML}{2F6FA8}
+\definecolor{unev}{HTML}{8A929A}
+
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+% #2 is UPPERCASED; the optional #1 tail is not -- \MakeUppercase would otherwise
+% case-change a colour name inside it (\color{crit} -> \color{CRIT}, undefined).
+\newcommand{\hdr}[2][]{%
+  {\sffamily\bfseries\footnotesize\color{ink}\MakeUppercase{#2}}%
+  {\sffamily\footnotesize\color{faint}\,#1}%
+  \par\vspace{1pt}{\color{rule}\hrule height .6pt}\vspace{3pt}}
+
+\tikzset{
+  comp/.style={draw,rounded corners=2.5pt,minimum width=2.45cm,minimum height=0.82cm,
+               align=center,font=\sffamily\scriptsize,line width=.7pt,inner sep=1.5pt},
+  Csafe/.style={comp,fill=safe!12,draw=safe!75!black,text=ink},
+  Cwarn/.style={comp,fill=warn!22,draw=warn!85!black,text=ink},
+  Ccrit/.style={comp,fill=crit!20,draw=crit!85!black,text=ink,line width=1.1pt},
+  Carte/.style={comp,fill=arte!12,draw=arte!75!black,text=ink,dashed},
+  Cunev/.style={comp,fill=black!4,draw=unev,text=unev,dash pattern=on 2pt off 1.6pt},
+  ifc/.style={draw,rounded corners=1.5pt,minimum height=0.42cm,align=center,
+              font=\sffamily\tiny,line width=.5pt,inner sep=1.6pt,fill=white},
+  Isafe/.style={ifc,fill=safe!10,draw=safe!70!black,text=ink},
+  Iwarn/.style={ifc,fill=warn!20,draw=warn!85!black,text=ink},
+  Icrit/.style={ifc,fill=crit!18,draw=crit!85!black,text=ink,line width=.9pt},
+  Iarte/.style={ifc,fill=arte!10,draw=arte!70!black,text=ink,dashed},
+  Iunev/.style={ifc,fill=black!3,draw=unev,text=unev,dash pattern=on 1.6pt off 1.4pt},
+  fl/.style={-{Stealth[length=4pt]},line width=.75pt,color=ink!65},
+  flu/.style={-{Stealth[length=4pt]},line width=.6pt,color=unev,
+              dash pattern=on 2pt off 1.6pt},
+  vol/.style={line width=.6pt,color=ink!40,dash pattern=on 1pt off 1.4pt},
+}
+\newcommand{\Q}{{\bfseries\normalsize ?}}
+
+\begin{document}
+
+%================================================================ header
+{\sffamily\bfseries\large\color{ink} PULSATION ANALYSIS \;\textemdash\; KOVALENKO, 34, M}\hfill
+{\sffamily\small\color{faint} 2026-08-29 14:32 \;\textperiodcentered\; Stab.\ point \textit{Sokil}}\\[2pt]
+{\color{ink}\hrule height 1pt}
+\vspace{4pt}
+
+%================================================================ top row
+\noindent\begin{minipage}[t]{0.375\textwidth}
+\hdr[{\color{crit}(14:28 --- 4 min old)}]{Vitals}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+BP        & 104/62\quad(MAP 76)\\
+HR        & 118\\
+SpO$_2$   & 94\% RA\\
+RR        & 24\\
+GCS       & 14\quad(E4 V4 M6)\\
+Temp      & 36.4\,\textcelsius\\
+Cap refill& 3\,s\\
+\end{tabularx}
+\vspace{4pt}
+\hdr{Model input}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+Recording   & 081, 100\,Hz ICP + ABP\\
+Manoeuvre   & jugular compression, 118\,s\\
+Window      & $-120$ to $+268$\,s\\
+Fit         & RMSE 0.31\,mmHg / 261 beats\\
+Identifiable& 13 of 16 windows\\
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.60\textwidth}
+\hdr{Verdict}
+\vspace{-1pt}
+\begin{tikzpicture}
+\node[draw=crit,line width=1.2pt,fill=crit!8,rounded corners=3pt,
+      inner sep=6pt,text width=\linewidth-14pt,align=left] {
+  {\sffamily\bfseries\normalsize\color{crit} NO RELIABLE READ — do not act on this run.}\\[3pt]
+  {\footnotesize Fit went non-physiological (rulebook \textbf{R1}, tube-law escape):
+  resting jugular area \textbf{6.12\,cm\textsuperscript{2}} against a physiological
+  0.8--2.0. The fit inflated the vein and blocked the collateral to manufacture the
+  measured ICP step — neither is a statement about this patient.\\[3pt]
+  \textbf{ACTION:} repeat the manoeuvre. The two venous components cannot be assessed.
+  Findings below the artefact line are unaffected and may be read.}};
+\end{tikzpicture}
+\vspace{3pt}
+\hdr{Readable findings}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}l r c X@{}}
+\toprule
+\textbf{Component} & \textbf{w} & \textbf{Dir} & \textbf{Value / reference}\\
+\midrule
+CSF absorption (cran.+spinal) & 1.53 & low  & 1.27 vs 6.0--10.0 mmHg/(mL$\cdot$min)\\
+Intracranial compliance       & 0.63 & low  & 0.226 vs 0.50--1.10 mL/mmHg\\
+Spinal dural sac              & 0.63 & low  & shares the same parameter\\
+Cerebral arterial\rlap{$^{\dagger}$} & 0.39 & low & 0.0109 vs 0.015--0.05 mL/mmHg\\
+Dural sinus                   & 0.11 & high & 8.79 vs 5.0--8.0 mmHg\\
+\bottomrule
+\end{tabularx}
+{\scriptsize\color{faint}$^{\dagger}$ bound anchored on the model default, not a
+published human range.}
+\end{minipage}
+
+\vspace{7pt}
+%================================================================ the map
+\hdr[--- 9 compartments, 12 interfaces; weight shown where evaluated]{Component map}
+\vspace{1pt}
+
+\centering
+\scalebox{1.16}{%
+\begin{tikzpicture}[node distance=1cm]
+
+% CSF / arterial chain runs straight down the LEFT; venous chain down the RIGHT.
+% The internal jugular is routed OUTSIDE the venous column (x=9.6) so its label has
+% room -- drawn through the middle it lands on top of the collateral box.
+% ---------------- compartments
+\node[Cwarn] (art)  at (0,6.1)   {Cerebral arterial\\[-1pt]{\tiny w\,0.39\ \ low}};
+\node[Cunev] (cven) at (0,4.5)   {Cerebral venous\\[-1pt]{\tiny\Q}};
+\node[Ccrit] (pic)  at (0,2.5)   {\textbf{Intracranial CSF}\\[-1pt]{\tiny w\,0.63\ \ low}};
+\node[Ccrit] (sac)  at (0,0.4)   {\textbf{Spinal dural sac}\\[-1pt]{\tiny w\,0.63\ \ low}};
+\node[Cunev] (para) at (0,-1.9)  {Paravertebral\\[-1pt]{\tiny\Q}};
+
+\node[Csafe] (sin)  at (6.6,5.3) {Dural sinus\\[-1pt]{\tiny w\,0.11\ \ high}};
+\node[Cunev] (bulb) at (6.6,3.3) {Jugular bulb\\[-1pt]{\tiny\Q}};
+\node[Cunev] (plex) at (6.6,1.0) {Vertebral plexus\\[-1pt]{\tiny\Q}};
+\node[Cunev] (sys)  at (6.6,-1.9){Systemic venous\\[-1pt]{\tiny\Q}};
+
+% ---------------- flow interfaces
+\draw[flu] (art)  -- node[Iunev,pos=.5] {arteriolar / capillary \ \Q} (cven);
+\draw[flu] (cven) -- node[Iunev,pos=.5] {cerebral venous outflow \ \Q} (sin);
+\draw[fl]  (pic.east)  -- node[Icrit,pos=.46,sloped,above=-1pt]
+           {CSF absorption, cranial\ \ \textbf{w\,1.53} low} (sin.south west);
+\draw[flu] (pic)  -- node[Iunev,pos=.5] {craniospinal channel \ \Q} (sac);
+\draw[fl]  (sac)  -- node[Icrit,pos=.5] {CSF absorption, spinal\ \ \textbf{w\,1.53} low} (para);
+\draw[flu] (sin)  -- node[Iunev,pos=.5] {sinus $\to$ bulb \ \Q} (bulb);
+\draw[fl]  (bulb) -- node[Iarte,pos=.5] {vertebral collateral\ \ \textbf{ARTEFACT}} (plex);
+% jugular: out to the right, clear of the column
+\draw[fl]  (bulb.east) to[out=0,in=0,looseness=1.15]
+           node[Iarte,pos=.5,right=1mm] {internal jugular\ \ \textbf{ARTEFACT}} (sys.east);
+\draw[flu] (plex.west) to[out=180,in=0]
+           node[Iunev,pos=.5,above=-1pt] {plexus drainage \ \Q} (para.north east);
+\draw[flu] (plex) -- node[Iunev,pos=.5] {plexus shunt \ \Q} (sys);
+\draw[flu] (para) -- node[Iunev,pos=.5] {azygos return \ \Q} (sys);
+% volume coupling: arterial displaces into the CSF space, no resistance element
+\draw[vol] (art.west) to[out=180,in=180,looseness=1.5]
+           node[pos=.5,left=1mm,font=\tiny,color=faint,align=right]
+           {volume\\coupling\\{\scriptsize(no element)}} (pic.west);
+
+% ---------------- legend
+\begin{scope}[shift={(-0.7,-3.6)}]
+  \node[Ccrit,minimum width=1.45cm,minimum height=0.5cm] (l1) at (0,0) {warning};
+  \node[Cwarn,minimum width=1.45cm,minimum height=0.5cm,right=3mm of l1] (l2) {borderline};
+  \node[Csafe,minimum width=1.45cm,minimum height=0.5cm,right=3mm of l2] (l3) {within ref.};
+  \node[Carte,minimum width=1.45cm,minimum height=0.5cm,right=3mm of l3] (l4) {artefact};
+  \node[Cunev,minimum width=1.45cm,minimum height=0.5cm,right=3mm of l4] (l5) {\Q\ not eval.};
+  \node[right=4mm of l5,align=left,font=\scriptsize,color=faint,text width=4.6cm]
+       {\textbf{13 of 21} components carry \Q: no streamed parameter governs them.\\
+        \Q\ means \textbf{not estimated}, never \textbf{normal}.};
+\end{scope}
+\end{tikzpicture}}
+
+\raggedright
+\vspace{4pt}
+%================================================================ transcript
+\hdr[--- verbatim, no clinician inference]{Transcript summary}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}l l X l@{}}
+\toprule
+\textbf{Point} & \textbf{Time} & \textbf{Said} & \textbf{Requests}\\
+\midrule
+POI            & 11:05 & ``head hurts, can't see right''                    & water\\
+CCP            & 12:40 & neck pain turning left                             & water $\times2$\\
+Stab.\ Sokil   & 14:20 & \textbf{headache worse lying flat}                  & asks about brother $\times2$\\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+{\scriptsize\color{ink}\textbf{Note.} ``Worse lying flat'' is positional and is evidence about
+intracranial pressure that the model did not produce. It arrives from the patient and is not
+reconciled with the model output above — where the two disagree, both are shown.}
+
+\vspace{5pt}
+{\color{rule}\hrule height .6pt}
+\vspace{3pt}
+{\scriptsize\color{faint}
+\textbf{Provenance.} Component weights, values and the R1 determination are \textbf{real
+output} for recording 081, final window ($t_\mathrm{end}=268.4$\,s).
+Name, age, sex, vitals, evacuation points and transcript are \textbf{synthetic} — the dataset
+contains none of these.
+\textbf{Weight} is the excursion beyond the healthy band (1.0 at the pathological bound),
+discounted by identifiability; it is not a probability.
+\textbf{No healthy controls exist in this dataset} — every bound is from literature.
+The underlying model overestimates ICP pulse amplitude under compression by ${\sim}7\times$
+from a diagnosed cause, which is why the jugular carries a QC bound rather than a clinical one.
+Not a diagnosis. Confirm before acting.}
+
+\end{document}
