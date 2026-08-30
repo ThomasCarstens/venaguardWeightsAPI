@@ -1,3 +1,24 @@
+#!/usr/bin/env python3
+"""Detect overlapping text, margin overflow and near-collisions in a PDF.
+
+Written for reports/patient_card.tex, where enlarging one section is exactly the edit that
+pushes another into its neighbour. Eyeballing a render will not catch a 2pt collision.
+
+    python3 scripts/check_pdf_overlap.py reports/patient_card.pdf [threshold]
+
+Reports three things:
+  1. words whose box falls outside the geometry margins
+  2. word-box intersections above `threshold` (default 0.05 of the smaller box)
+  3. same-line horizontal gaps under 0.4pt
+
+ONE FALSE POSITIVE WORTH KNOWING. Words on ADJACENT LINES intersect by ~12% at normal
+leading, because a bounding box runs ascender to descender and consecutive lines share that
+band. Those are not visual collisions. Read the `y` column: pairs whose y differs by about a
+line height are fine. Genuine collisions are same-line, which section 3 isolates.
+
+The figure is covered too -- TikZ `node` text is extracted like any other word, so the 21 pin
+labels on the anatomy overlay are checked against each other and against the body text.
+"""
 import re, sys, subprocess, itertools
 pdf=sys.argv[1]
 thr=float(sys.argv[2]) if len(sys.argv)>2 else 0.05
