@@ -4,16 +4,16 @@ KEEP = 0.56          # keep the top 56% — all 21 pins are above y=160
 
 # n, label, status, x_px, y_px, label_x, label_y   (status: crit|warn|safe|arte|unev)
 PINS = [
-    (1,  "Cerebral arterial",          "warn", 178,  30, 140,  16),
-    (2,  "Intracranial CSF",           "crit", 189,  36, 140,  33),
-    (3,  "Cerebral venous",            "unev", 200,  38, 228,  30),
-    (4,  "Arteriolar bed",             "unev", 176,  43, 140,  50),
-    (5,  "Capillary bed",              "unev", 186,  47, 228,  46),
-    (6,  "Cerebral venous outflow",    "unev", 201,  28, 228,  14),
-    (7,  "Craniospinal CSF channel",   "unev", 189,  54, 140,  67),
-    (8,  "Sinus to jugular bulb",      "unev", 180,  57, 140,  84),
-    (9,  "Jugular bulb",               "unev", 177,  61, 140, 101),
-    (10, "Internal jugular",           "arte", 174,  67, 140, 118),
+    (1,  "Cerebral arterial",          "warn", 178,  30, 112,  16),
+    (2,  "Intracranial CSF",           "crit", 189,  36, 112,  33),
+    (3,  "Cerebral venous",            "unev", 200,  38, 252,  30),
+    (4,  "Arteriolar bed",             "unev", 176,  43, 112,  50),
+    (5,  "Capillary bed",              "unev", 186,  47, 252,  46),
+    (6,  "Cerebral venous outflow",    "unev", 201,  28, 252,  14),
+    (7,  "Craniospinal CSF channel",   "unev", 189,  54, 112,  67),
+    (8,  "Sinus to jugular bulb",      "unev", 180,  57, 112,  84),
+    (9,  "Jugular bulb",               "unev", 177,  61, 112, 101),
+    (10, "Internal jugular",           "arte", 174,  67, 112, 118),
     (11, "Systemic venous",            "unev", 194,  95, None, None),
     (12, "Dural sinus",                "safe", 423,  14, None, None),
     (13, "CSF absorption, cranial",    "crit", 411,  21, None, None),
@@ -27,7 +27,7 @@ PINS = [
     (21, "Plexus shunt",               "unev", 441, 160, None, None),
 ]
 
-TQ = [(4, 14, 128, 96), (236, 14, 356, 96)]
+TQ = [(0, 0, 134, 103), (230, 0, 366, 103)]
 
 nx = lambda x: round(x / W, 5)
 ny = lambda y: round(1 - y / (H * KEEP), 5)   # scope maps to the CROPPED node
@@ -50,7 +50,7 @@ key_lines = []
 for (n, lab, st, *_r) in PINS:
     mark = {"crit": "\\textbf{w\\,1.53}" if "absorption" in lab else "\\textbf{w\\,0.63}",
             "warn": "w\\,0.39", "safe": "w\\,0.11",
-            "arte": "\\textbf{ARTEFACT}", "unev": "\\Q"}[st]
+            "arte": "\\textbf{NEEDS EVIDENCE}", "unev": "\\Q"}[st]
     if lab == "Intracranial CSF":
         mark = "\\textbf{w\\,0.63}"
     key_lines.append((n, lab, st, mark))
@@ -133,77 +133,58 @@ TEX = r"""\documentclass[9pt,a4paper]{extarticle}
 {\color{ink}\hrule height 1pt}
 \vspace{5pt}
 
+%================================================================ vitals, full width
+\hdrbig{Vitals}
+\centering
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}cccccccc@{}}
+{\sffamily\small\color{faint}REPORT} &
+{\sffamily\small\color{faint}BP} & {\sffamily\small\color{faint}HR} &
+{\sffamily\small\color{faint}SpO$_2$} & {\sffamily\small\color{faint}RR} &
+{\sffamily\small\color{faint}GCS} & {\sffamily\small\color{faint}TEMP} &
+{\sffamily\small\color{faint}CAP REFILL}\\[5pt]
+{\sffamily\bfseries\huge\color{ink}14:32} &
+{\sffamily\bfseries\huge\color{ink}104/62} & {\sffamily\bfseries\huge\color{ink}118} &
+{\sffamily\bfseries\huge\color{ink}94\%} & {\sffamily\bfseries\huge\color{ink}24} &
+{\sffamily\bfseries\huge\color{ink}14} & {\sffamily\bfseries\huge\color{ink}36.4\,\textcelsius} &
+{\sffamily\bfseries\huge\color{ink}3\,s}\\[4pt]
+{\sffamily\small\color{faint}2026-08-29} & {\sffamily\small\color{faint}MAP 76} & & {\sffamily\small\color{faint}RA} & &
+{\sffamily\small\color{faint}E4 V4 M6} & & \\
+\end{tabular*}
+\raggedright
+
+
+\vspace{10pt}
+
 %================================================================ transcript (first)
 \hdrbig[--- verbatim, no clinician inference]{What the patient said}
-\normalsize
-\setlength{\extrarowheight}{3.5pt}
-\begin{tabularx}{\linewidth}{@{}l l X l@{}}
+\LARGE
+\setlength{\extrarowheight}{9pt}
+\begin{tabularx}{\linewidth}{@{}r l l X l@{}}
 \toprule
-\textbf{Point} & \textbf{Time} & \textbf{Said} & \textbf{Requests}\\
+\textbf{\#} & \textbf{Site} & \textbf{Time} & \textbf{Said} & \textbf{Requests}\\
 \midrule
-POI            & 11:05 & ``head hurts, can't see right''    & water\\
-CCP            & 12:40 & neck pain turning left             & water $\times2$\\
-Stab.\ Sokil   & 14:20 & \textbf{headache worse lying flat} & asks about brother $\times2$\\
+1 & POI            & 11:05 & ``head hurts, can't see right''    & water\\
+2 & CCP            & 12:40 & neck pain turning left             & water $\times2$\\
+3 & Stab.\ Sokil   & 14:20 & \textbf{headache worse lying flat} & asks about brother $\times2$\\
 \bottomrule
 \end{tabularx}
 \setlength{\extrarowheight}{0pt}
-\vspace{4pt}
 
-{\footnotesize\color{ink}\textbf{Note.} ``Worse lying flat'' is positional and is evidence about
-intracranial pressure that the model did not produce. It arrives from the patient and is not
-reconciled with the model output below --- where the two disagree, both are shown.}
-
-\vspace{7pt}
-
-%================================================================ vitals + input
-\noindent\begin{minipage}[t]{0.485\textwidth}
-\hdr[{\color{ccrit}(14:28 --- 4 min old)}]{Vitals}
-\footnotesize
-\begin{tabularx}{\linewidth}{@{}lX@{}}
-BP        & 104/62\quad(MAP 76)\\
-HR        & 118\\
-SpO$_2$   & 94\% RA\\
-RR        & 24\\
-GCS       & 14\quad(E4 V4 M6)\\
-Temp      & 36.4\,\textcelsius\\
-Cap refill& 3\,s\\
-\end{tabularx}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.485\textwidth}
-\hdr{Model input}
-\footnotesize
-\begin{tabularx}{\linewidth}{@{}lX@{}}
-Recording   & 081, 100\,Hz ICP + ABP\\
-Manoeuvre   & jugular compression, 118\,s\\
-Window      & $-120$ to $+268$\,s\\
-Fit         & RMSE 0.31\,mmHg / 261 beats\\
-Identifiable& 13 of 16 windows\\
-\end{tabularx}
-\vspace{2pt}
-{\scriptsize\color{faint}RMSE is the typical gap between the model's ICP and the measured
-ICP. 0.31\,mmHg is small; it means the model reproduces the pressure, not that the parts
-below are right.\par}
-\end{minipage}
+\vspace{10pt}
 
 \vspace{9pt}
 
 %================================================================ title above the picture
-{\sffamily\bfseries\LARGE\color{ink} PULSATION ANALYSIS}\hfill
+{\sffamily\bfseries\huge\color{ink} PULSATILE ANALYSIS}\hfill
 {\sffamily\footnotesize\color{faint} the CSF and venous circuit as 9 compartments and
 12 interfaces \;\textperiodcentered\; colour = status, number = key below}\\[3pt]
 {\color{ink}\hrule height 1.1pt}
 \vspace{5pt}
 
-{\sffamily\bfseries\Large\color{ink} The digital twin suggests investigating these zones.}\\[2pt]
-{\sffamily\footnotesize\color{faint} Start with {\color{ccrit}\textbf{red}}. {\color{carte}\textbf{Orange}}
-is the model correcting its own arithmetic --- not a finding in this patient. Grey was not
-measured at all.}
-\vspace{5pt}
-
 \centering
 \begin{tikzpicture}
   \node[anchor=south west,inner sep=0] (img)
-    {\includegraphics[width=0.92\textwidth]{../figures/body_template_upper.png}};
+    {\includegraphics[width=\textwidth]{../figures/body_template_upper.png}};
   \begin{scope}[x={(img.south east)},y={(img.north west)}]
 __MASKS__
     \fill[white,opacity=0.5] (0,0) rectangle (1,1);
@@ -216,67 +197,36 @@ __PINS__
 \tikz[baseline=-.5ex]\filldraw[ccrit] (0,0) circle (1.5mm); warning \quad
 \tikz[baseline=-.5ex]\filldraw[cwarn] (0,0) circle (1.5mm); borderline \quad
 \tikz[baseline=-.5ex]\filldraw[csafe] (0,0) circle (1.5mm); within ref. \quad
-\tikz[baseline=-.5ex]\filldraw[carte] (0,0) circle (1.5mm); artefact \quad
+\tikz[baseline=-.5ex]\filldraw[carte] (0,0) circle (1.5mm); requires evidence \quad
 \tikz[baseline=-.5ex]\filldraw[white,draw=cunev,line width=.6pt] (0,0) circle (1.4mm); \Q\ not evaluated\par}
 
 \vspace{7pt}
+{\sffamily\bfseries\Large\color{ink} The digital twin suggests investigating these zones.
+\;{\color{ccrit}Not a diagnosis.}}\\[2pt]
+{\sffamily\footnotesize\color{faint} Start with {\color{ccrit}\textbf{red}}. {\color{carte}\textbf{Orange}}
+is the model correcting its own arithmetic --- not a finding in this patient. Grey was not
+measured at all.}
+
+\vspace{8pt}
 \raggedright
-\hdr[--- four terms on this card that do not mean what they usually mean]{How to read this}
-\footnotesize
-\noindent\begin{minipage}[t]{0.485\textwidth}
-\begin{tabularx}{\linewidth}{@{}p{1.35cm}X@{}}
-\textbf{w\,0.63} & how far \emph{outside} the normal band that part sits. 0 = at the edge of
-normal, 1.0 = at the danger bound, higher = further out. It is \textbf{not} a probability and
-\textbf{not} a severity score.\\[3pt]
-\Q & nothing on this card measured that part. It means \textbf{not measured}. It does
-\textbf{not} mean normal --- 13 of the 21 parts are like this.\\
-\end{tabularx}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.485\textwidth}
-\begin{tabularx}{\linewidth}{@{}p{1.35cm}X@{}}
-{\color{carte}\textbf{artefact}} & the model bent this number to make its own arithmetic
-work. It is a statement about the model, \textbf{not about this patient}. Do not read the
-value.\\[3pt]
-\textbf{the dots} & lumped parts of the CSF and venous circuit, drawn where that region
-roughly is. They are \textbf{not surgical landmarks}.\\
-\end{tabularx}
-\end{minipage}
-
-\vspace{3pt}
-{\footnotesize\color{ink}\textbf{Where the numbers come from.} A two-minute jugular
-compression, held by hand. Before it starts almost nothing here can be measured at all; the
-compression is what makes the venous numbers estimable, and \textbf{Identifiable} above counts
-the windows where that worked. Where it did not, the value is a guess and is marked \Q.\par}
-
-\vspace{6pt}
-\hdr{Component key}
-{\footnotesize
+\hdrbig{Component key}
+{\normalsize
 __KEY0__ \hfill
 __KEY1__ \hfill
 __KEY2__
 \par}
 \vspace{3pt}
-{\scriptsize\color{faint}\textbf{13 of 21} components carry \Q: no streamed parameter governs
-them. \Q\ means \textbf{not estimated}, never \textbf{normal}. The two \textbf{artefact}
-components are rulebook \textbf{R1} (tube-law escape) --- the fit inflated the resting jugular
-to 6.12\,cm\textsuperscript{2} against a physiological 0.8--2.0 and blocked the collateral to
-manufacture the measured ICP step. Neither is a statement about this patient.}
+{\footnotesize\color{ink}\textbf{w} = how far outside the normal band, 1.0 = at the danger
+bound. \textbf{13 of 21 parts show \Q\ --- not measured, which is not the same as normal.}
+The two {\color{carte}\textbf{requires-evidence}} parts are the model correcting its own arithmetic and
+are \textbf{not statements about this patient}.\par}
 
-\vspace{5pt}
+\vspace{6pt}
 {\color{rule}\hrule height .6pt}
 \vspace{3pt}
-{\scriptsize\color{faint}
-\textbf{Provenance.} Component weights, values and the R1 determination are \textbf{real
-output} for recording 081, final window ($t_\mathrm{end}=268.4$\,s).
-Name, age, sex, vitals, evacuation points and transcript are \textbf{synthetic} --- the dataset
-contains none of these.
-\textbf{Weight} is the excursion beyond the healthy band (1.0 at the pathological bound),
-discounted by identifiability; it is not a probability.
-\textbf{No healthy controls exist in this dataset} --- every bound is from literature.
-The underlying model overestimates ICP pulse amplitude under compression by ${\sim}7\times$
-from a diagnosed cause, which is why the jugular carries a QC bound rather than a clinical one.
-Pin positions are schematic --- the anatomical region a lumped element stands for, not a
-surgical landmark. Not a diagnosis. Confirm before acting.}
+{\footnotesize\color{faint}Component weights and the artefact call are real output for recording
+081. \textbf{Name, age, sex, vitals and transcript are synthetic.} Not a diagnosis --- confirm
+before acting.\par}
 
 \end{document}
 """

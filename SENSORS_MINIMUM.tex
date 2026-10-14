@@ -4,7 +4,7 @@
 % Build:  pdflatex SENSORS_MINIMUM.tex   (twice, for the page count)
 
 \documentclass[10pt,a4paper]{article}
-\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=1.7cm,right=1.7cm]{geometry}
+\usepackage[a4paper,top=1.5cm,bottom=1.35cm,left=1.7cm,right=1.7cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
@@ -45,7 +45,7 @@
 \definecolor{vein}{HTML}{3E6EA8}
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt}
+\setlength{\parskip}{3pt}
 \pagestyle{fancy}\fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \fancyfoot[L]{\sffamily\scriptsize\color{faint}SENSORS\_MINIMUM \;\textperiodcentered\;
@@ -54,7 +54,7 @@
 
 %========================================================= furniture
 \newcounter{seccnt}
-\newcommand{\Sec}[2][elec]{\par\addvspace{11pt}\noindent
+\newcommand{\Sec}[2][elec]{\par\addvspace{9pt}\noindent
   \refstepcounter{seccnt}%
   \begin{tikzpicture}[baseline=(t.base)]
     \node[fill=#1,text=white,rounded corners=1.5pt,inner xsep=4pt,inner ysep=2pt,
@@ -64,7 +64,7 @@
   \end{tikzpicture}\par
   \vspace{2.5pt}{\color{rulec}\hrule height .7pt}\vspace{5pt}}
 
-\newcommand{\Sub}[1]{\par\addvspace{5pt}%
+\newcommand{\Sub}[1]{\par\addvspace{4pt}%
   {\sffamily\bfseries\footnotesize\color{mid}\MakeUppercase{#1}}\par\vspace{1pt}}
 
 \newtcolorbox{cbox}[2][elec]{enhanced,breakable,
@@ -93,6 +93,7 @@
   aboveskip=7pt, belowskip=5pt,
   morekeywords={function,end,return,for,in,if,else,elseif,const,using,include,do,let,struct},
   literate={θ}{{\ensuremath{\theta}}}1 {σ}{{\ensuremath{\sigma}}}1 {Δ}{{\ensuremath{\Delta}}}1
+           {τ}{{\ensuremath{\tau}}}1 {α}{{\ensuremath{\alpha}}}1 {δ}{{\ensuremath{\delta}}}1
            {Ω}{{\ensuremath{\Omega}}}1 {·}{{\ensuremath{\cdot}}}1 {—}{{---}}1
            {→}{{\ensuremath{\rightarrow}}}1 {≥}{{\ensuremath{\ge}}}1 {≤}{{\ensuremath{\le}}}1
 }
@@ -150,9 +151,9 @@ blood-pressure cuff and a handful of adhesive electrodes estimate about a jugula
 compression?}
 
 \begin{cbox}[elec]{The answer, in one sentence}
-The cuff and the electrodes \textbf{cannot replace the bolt} --- four of the six streamed
-parameters go dark and a fifth barely moves --- but they measure, better than the bolt
-does, the one parameter the \textsc{rulebook} says the bolt-based fit is
+The cuff and the electrodes \textbf{cannot replace the bolt} --- five of the six streamed
+parameters go dark --- but they measure, and calibrated they measure $26\times$ better than
+the bolt does, the one parameter the \textsc{rulebook} says the bolt-based fit is
 \textbf{lying about}.
 \end{cbox}
 
@@ -165,46 +166,46 @@ pointed not at the patient but at the model.
 \vspace{-3pt}
 \begin{center}
 \begin{tikzpicture}[x=1mm,y=1mm,font=\sffamily]
-\newcommand{\ttl}[3]{\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (#1,101) {#2};
-  \node[font=\sffamily\fontsize{6.3}{6.3}\selectfont,text=faint,anchor=west] at (#1,96.5) {#3};}
+\newcommand{\ttl}[3]{\node[font=\sffamily\bfseries\scriptsize,text=ink,anchor=west] at (#1,97) {#2};
+  \node[font=\sffamily\fontsize{6.3}{6.3}\selectfont,text=faint,anchor=west] at (#1,92.8) {#3};}
 
 %================================================ A — the patient
 \ttl{0}{THE PATIENT}{supine, head neutral and \emph{fixed}}
 
-\draw[rounded corners=4pt,fill=skin,draw=skin]  (0,22)   rectangle (4.5,58);   % arm
-\draw[rounded corners=4pt,fill=skin,draw=skin]  (45.5,22) rectangle (50,58);   % arm
-\draw[rounded corners=5pt,fill=skin,draw=skin]  (6,18)   rectangle (44,66);    % torso
-\fill[skin] (18,62) rectangle (32,79);                                        % neck
-\filldraw[skin,draw=skin] (25,86) circle (9.5);                               % head
-\draw[faint,line width=.45pt] (34.3,86.5) arc (90:270:1.9 and 2.6);           % ear
+\tikzset{body/.style={fill=skin,draw=skin!62!mid,line width=.5pt}}
+\draw[rounded corners=4pt,body] (2,32)    rectangle (6.5,58);   % arm
+\draw[rounded corners=4pt,body] (43.5,32) rectangle (48,58);    % arm
+\draw[rounded corners=5pt,body] (8,30)    rectangle (42,61);    % torso + shoulders
+\draw[body]                     (18.5,59) rectangle (31.5,77);  % neck
+\filldraw[body]                 (25,84)   circle (7.6);         % head
 
-% the two internal jugulars
-\draw[vein,line width=2.2pt,line cap=round,opacity=.85] (28.6,79) -- (28.0,62.5);
-\draw[vein,line width=2.2pt,line cap=round,opacity=.30] (21.4,79) -- (22.0,62.5);
+% the two internal jugulars, running the length of the neck
+\draw[vein,line width=2pt,line cap=round,opacity=.85] (28.6,76.5) -- (28.0,59.5);
+\draw[vein,line width=2pt,line cap=round,opacity=.28] (21.4,76.5) -- (22.0,59.5);
 
 % the compression
-\fill[bolt,opacity=.15,rounded corners=1.5pt] (16,66.8) rectangle (34,71.6);
-\draw[bolt,line width=.5pt,rounded corners=1.5pt] (16,66.8) rectangle (34,71.6);
-\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (11.6,69.2) -- (15.5,69.2);
-\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (38.4,69.2) -- (34.5,69.2);
+\fill[bolt,opacity=.15,rounded corners=1.5pt] (16,63.6) rectangle (34,68.4);
+\draw[bolt,line width=.5pt,rounded corners=1.5pt] (16,63.6) rectangle (34,68.4);
+\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (11.6,66) -- (15.5,66);
+\draw[bolt,-{Latex[length=1.5mm]},line width=.6pt] (38.4,66) -- (34.5,66);
 
 % the four neck electrodes: V+ and V- straddle the compression (rule E3)
-\foreach \y/\lab in {76.4/I+,73.2/V+,60.6/V--,56.8/I--} {
-  \draw[elec,fill=elec!13,rounded corners=1pt,line width=.6pt] (19,\y-1.5) rectangle (31,\y+1.5);
+\foreach \y/\lab in {74.4/I+,70.9/V+,57.8/V--,53.8/I--} {
+  \draw[elec,fill=elec!13,rounded corners=1pt,line width=.6pt] (20.5,\y-1.5) rectangle (29.5,\y+1.5);
   \node[font=\sffamily\bfseries\fontsize{5.4}{5.4}\selectfont,text=elec] at (25,\y) {\lab};
 }
 % the three ECG electrodes
-\foreach \x/\y in {12/49, 38/49, 25/27} {
+\foreach \x/\y in {14/52, 36/52, 25/37} {
   \filldraw[ecg,fill=ecg!15,rounded corners=1pt,line width=.55pt]
     (\x-2.3,\y-2.3) rectangle (\x+2.3,\y+2.3);
   \filldraw[ecg] (\x,\y) circle (.75);
 }
 % the cuff
-\fill[cuff,opacity=.8,rounded corners=1.5pt] (44.6,35) rectangle (50.9,45);
+\fill[cuff,opacity=.8,rounded corners=1.5pt] (42.9,41) rectangle (48.6,50);
 
 % legend, in place of leader lines
 \node[anchor=north west,font=\sffamily\fontsize{5.8}{8}\selectfont,text=mid,align=left,inner sep=0]
-  at (0,15) {%
+  at (0,26) {%
   \textcolor{elec}{$\blacksquare$}~4 neck electrodes, tetrapolar\quad
   \textcolor{ecg}{$\blacksquare$}~3 ECG\\
   \textcolor{cuff}{$\blacksquare$}~NIBP cuff\quad
@@ -213,11 +214,11 @@ pointed not at the patient but at the model.
 %================================================ B — the sensing span
 \ttl{68}{THE SENSING SPAN}{tetrapolar, 50--100\,kHz, ${\sim}0.5$\,mA}
 
-\draw[rounded corners=3pt,fill=skin!55,draw=rulec,line width=.6pt] (79,42) rectangle (112,94);
+\draw[rounded corners=3pt,fill=skin!55,draw=rulec,line width=.6pt] (79,42) rectangle (112,90);
 % current field, behind everything
 \foreach \b in {8,14,20} {
   \draw[elec,opacity=.30,line width=.4pt,dashed]
-    (82.4,90) .. controls (82.4+\b,84) and (82.4+\b,54) .. (82.4,48);
+    (82.4,86) .. controls (82.4+\b,80) and (82.4+\b,56) .. (82.4,50);
 }
 % the compressed zone
 \fill[bolt,opacity=.13] (79,64) rectangle (112,76);
@@ -225,20 +226,20 @@ pointed not at the patient but at the model.
 \draw[bolt,line width=.45pt,dashed] (79,76) -- (112,76);
 % the jugular, pinched where the thumbs are
 \fill[vein,opacity=.8]
-  (100,94) .. controls (100,82) and (102.9,79) .. (102.9,70)
+  (100,90) .. controls (100,82) and (102.9,79) .. (102.9,70)
           .. controls (102.9,61) and (100,58)  .. (100,42)
   -- (107,42) .. controls (107,58) and (104.1,61) .. (104.1,70)
-             .. controls (104.1,79) and (107,82) .. (107,94) -- cycle;
+             .. controls (104.1,79) and (107,82) .. (107,90) -- cycle;
 % the carotid, sharing the span
-\filldraw[crit,opacity=.42,draw=none] (91,86) circle (2.3);
-\node[font=\sffamily\fontsize{5.2}{5.2}\selectfont,text=crit,anchor=west] at (93.8,86) {carotid};
+\filldraw[crit,opacity=.42,draw=none] (91,84) circle (2.2);
+\node[font=\sffamily\fontsize{5.2}{5.2}\selectfont,text=crit,anchor=west] at (93.8,84) {carotid};
 % electrodes
-\foreach \y/\lab in {90/I+,82/V+,56/V--,48/I--} {
+\foreach \y/\lab in {86/I+,79/V+,57/V--,50/I--} {
   \draw[elec,fill=elec!16,rounded corners=1pt,line width=.7pt] (76,\y-2) rectangle (82.4,\y+2);
   \node[font=\sffamily\bfseries\fontsize{5.6}{5.6}\selectfont,text=elec] at (79.2,\y) {\lab};
 }
 % the sense span
-\draw[mid,line width=.5pt] (75,82) -- (73.2,82) -- (73.2,56) -- (75,56);
+\draw[mid,line width=.5pt] (75,79) -- (73.2,79) -- (73.2,57) -- (75,57);
 \node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=south,rotate=90] at (72.4,69)
   {$L\approx8$\,cm};
 \node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=bolt,anchor=west] at (113,70) {compression};
@@ -246,12 +247,12 @@ pointed not at the patient but at the model.
 %================================================ C — what Z does
 \ttl{134}{WHAT $Z$ DOES}{the model's own prediction}
 
-\draw[rulec,line width=.6pt] (138,46) -- (138,92);
+\draw[rulec,line width=.6pt] (138,46) -- (138,89);
 \draw[rulec,line width=.6pt] (138,46) -- (176,46);
 \node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=south,rotate=90] at (135.5,69)
   {$Z$\,($\Omega$)};
 \node[font=\sffamily\fontsize{6}{6}\selectfont,text=faint,anchor=north] at (158,44.5) {time};
-\fill[bolt,opacity=.10] (152,46) rectangle (166,92);
+\fill[bolt,opacity=.10] (152,46) rectangle (166,89);
 \draw[elec,line width=1.2pt,line cap=round,line join=round]
   (139,56) .. controls (144,56.3) and (148,55.7) .. (152,56)
   .. controls (153.3,56) and (153.4,82) .. (154.7,82.4)
@@ -261,7 +262,7 @@ pointed not at the patient but at the model.
 \draw[mid,{Latex[length=1.3mm]}-{Latex[length=1.3mm]},line width=.5pt] (147,56) -- (147,82.2);
 \node[font=\sffamily\fontsize{6}{6}\selectfont,text=mid,anchor=east] at (146.2,69) {$\Delta Z$};
 \node[font=\sffamily\fontsize{5.6}{5.6}\selectfont,text=faint,anchor=west] at (139,52) {$Z_0\approx25\,\Omega$};
-\node[font=\sffamily\fontsize{5.6}{7}\selectfont,text=elec,align=center] at (159,66)
+\node[font=\sffamily\fontsize{5.6}{7}\selectfont,text=elec,align=center] at (160.5,65)
   {vein collapses\\$\Rightarrow$ less blood\\$\Rightarrow$ $Z$ \emph{rises}};
 
 \end{tikzpicture}
@@ -286,7 +287,7 @@ see rule~E3.\par}
   the model's state \texttt{u[11]}.\\[3pt]
 \chip{ecg}{ecg} \,3 ECG electrodes & Any 3-lead cable & Beat gating, so the impedance pulse
   can be ensemble-averaged. Replaces the ABP waveform's role in Tier~2.\\[3pt]
-\chip{bolt}{none} \,Stopwatch & --- & \texttt{t\_on} / \texttt{t\_off}. Unchanged from
+\chip{grey}{free} \,Stopwatch & --- & \texttt{t\_on} / \texttt{t\_off}. Unchanged from
   \texttt{SENSORS.md}.\\
 \bottomrule
 \end{tabularx}\par}
@@ -493,17 +494,19 @@ ar  = Vector{T}(undef, nout)               # + jugular area
 # neck venous volume the electrodes see, mL: both veins over the modelled segment
 neckvol(a) = a .* P.ltube .* P.Ntube
 
-function resid2(θ, t_end)
+function resid(θ, t_end, tiers)
     t, icp, ar, ok = solve_obs(mkP(θ), REC); ok || return nothing
-    ix = idxs(t, t_end)
-    vcat((icp[ix] .- REC.icpm[ix2]) ./ σ_icp,        # empty in the electrode tier
-         (neckvol(ar[ix]) .- Z_TO_ML .* REC.dz[ix2]) ./ σ_vol)
+    m  = (REC.tm .>= -110.0) .& (REC.tm .<= t_end)      # the window, unchanged
+    ix = [clamp(round(Int, (τ + 120.0)*100) + 1, 1, length(icp)) for τ in REC.tm[m]]
+    vcat(:bolt in tiers ? (icp[ix]         .- REC.icpm[m]) ./ σ_icp : Float64[],
+         :elec in tiers ? (neckvol(ar[ix]) .- REC.vneck[m]) ./ σ_vol : Float64[])
 end
 \end{lstlisting}
 
 Blocks are pre-divided by their own $\sigma$, so the two observables are commensurable and
-either can be dropped by supplying an empty block. \textbf{The electrode tier is the same
-estimator with the first block empty.}
+either can be dropped by leaving it out of \texttt{tiers}. \textbf{The electrode tier is
+the same estimator called with \texttt{tiers = (:elec,)}} --- where \texttt{REC.vneck} is the
+gain-corrected impedance channel that does not yet exist.
 
 \Sub{3 --- the gain is profiled, not fitted}
 
@@ -560,9 +563,10 @@ as a different experiment, "not the canonical refit" --- which implies the canon
 holds the refit. It does not; it holds the filter run.
 
 It matters because the filter run is the one \textsc{rulebook} R7 indicts by name:
-\texttt{collateral\_outflow\_resistance} sits at \textbf{2.60588} for the first
-\textbf{100+} windows with \texttt{n\_solves} frozen at 39 --- the Model 5 starting value,
-never departed. And the two runs disagree about the finding: \texttt{081\_batch} reports the
+\texttt{collateral\_outflow\_resistance} sits at \textbf{2.6058} for the first
+\textbf{117} windows --- the Model 5 starting value, not departed until the compression
+arrives at $t=-2$\,s --- while \texttt{rmse} runs from 1.15 down to 0.17 and
+\texttt{n\_solves} stays at \textbf{39 in all 418 windows}. And the two runs disagree about the finding: \texttt{081\_batch} reports the
 collateral \textbf{pathological at 14.46 and identifiable}, which fires R1 cleanly alongside
 a $4.50\,$cm\textsuperscript{2} jugular. The served \texttt{081} reports \textbf{2.01,
 unidentifiable} --- R1 does not fire, and the artefact is invisible.
@@ -574,8 +578,8 @@ a look independently of anything in this document.
 %========================================================= 9
 \Sec[crit]{What goes dark, and why it stays dark}
 
-Two of the six do not merely become unidentifiable --- they become underivable, and the
-distinction matters:
+Five of the six go dark, and one of those does not merely become unidentifiable --- it
+becomes \emph{underivable}, which is a different and worse thing:
 
 {\footnotesize
 \setlength{\tabcolsep}{6pt}
@@ -657,13 +661,14 @@ needs its own, because these failures are not visible in any parameter value.
 \Sec{Verdict}
 
 \begin{cbox}[elec]{Tier 0 --- one cuff, seven electrodes, no burr hole}
+\raggedright
 \textbf{Delivers:} one of six streamed parameters, \texttt{jugular\_resting\_area}, at
 accuracy comparable to the bolt uncalibrated and $26\times$ better calibrated; a continuous
 gain-free collapse ratio through the manoeuvre; a plausible route to the arterial-compliance
 pulse channel via ECG-gated impedance. \textbf{No schema change, no route change, no new
 physics.}
 
-\textbf{Does not deliver:} intracranial pressure, or anything derived from it. Four
+\textbf{Does not deliver:} intracranial pressure, or anything derived from it. Five
 parameters unidentifiable, one of them underivable in principle.
 
 \textbf{Is best understood as:} a continuous, operator-free version of the bedside
@@ -672,24 +677,22 @@ falsify this model's signature artefact --- an instrument aimed at the fit rathe
 patient.
 \end{cbox}
 
+\enlargethispage{2.2\baselineskip}
 \vspace{4pt}
 {\color{rulec}\hrule height .6pt}
 \vspace{3pt}
-{\scriptsize\color{faint}
-\textbf{Provenance.} \textbf{Computed} --- the identifiability table, the volume swing, the
-collapse ratio and the Nyboer estimate --- is output of
-\texttt{model/electrode\_fim.jl}, run at 081's final published window
-(\texttt{\_SRC=081\_batch} and \texttt{\_SRC=081}). It is a Fisher analysis of a
-\emph{synthetic} observable derived from the model's own state \texttt{u[11]}; it reports
-what the model believes an electrode would identify. \textbf{Served} --- the per-patient
-table in \S6 and the byte-identity in \S8 --- is read from \texttt{api/stream/} and
-\texttt{api/params/} as they stand on disk. \textbf{Everything else is engineering
-argument.} No impedance signal exists in this dataset, no electrode estimator has been
-written, and the electrode noise level, $\rho$, $Z_0$ and $L$ are literature-typical
-assumptions, stated so they can be disagreed with.
-\textbf{No healthy controls exist in this dataset} --- every bound is from literature.
-The underlying model overestimates ICP pulse amplitude under compression by
-${\sim}7\times$ from a diagnosed cause, which is the artefact this tier is aimed at.
-Not clinical advice, and not a recommendation to place any monitor anywhere.}
+{\fontsize{7.3}{8.8}\selectfont\color{faint}
+\textbf{Provenance.} \textbf{Computed} --- the identifiability table, the volume swing,
+the collapse ratio, the Nyboer estimate --- is output of
+\texttt{model/electrode\_fim.jl}, both published estimators for 081. It is a Fisher
+analysis of a \emph{synthetic} observable derived from the model's own state
+\texttt{u[11]}: it reports what the model believes an electrode would identify.
+\textbf{Served} --- \S6's per-patient table, \S8's byte-identity --- is read from
+\texttt{api/stream/} and \texttt{api/params/} as they stand on disk. \textbf{Everything
+else is engineering argument:} no electrode estimator has been written, and the noise
+level, $\rho$, $Z_0$ and $L$ are literature-typical assumptions, stated so they can be
+disagreed with. \textbf{No healthy controls exist in this dataset} --- every bound is from
+literature. The underlying model overestimates ICP pulse amplitude under compression by
+${\sim}7\times$, the artefact this tier is aimed at. Not clinical advice.}
 
 \end{document}

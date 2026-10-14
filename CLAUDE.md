@@ -46,6 +46,11 @@ not the canonical refit).
 | **component view** | `python3 scripts/translate_stream.py` | ~1 s |
 | one patient's refit | `_PATIENT=081 _NWIN=16 _WIN_ITERS=45 julia --project=. model/stream_refit.jl` | ~65 min |
 | all four | `bash model/stream_all.sh 16 45` | ~70 min (parallel) |
+| README diagrams | `bash scripts/build_readme_figures.sh` | ~2 s |
+
+The README's diagrams are Typst, defined once in `figures/readme/figs.typ` and shared with
+`reports/readme_diagrams.typ` (compile with `--root .`). Their numbers are hard-coded from
+`api/` as of 2026-10-14 — a refit does not update them.
 
 `translate_stream.py` is pure post-processing over what the refit already wrote, so the
 translation logic can be changed and re-run in a second without redoing a refit.
